@@ -9,5 +9,17 @@ This game is going to be my most technically advanced GBA game. It will of cours
 
 ## Resources
 GFX - Me
+
 Audio - Me, VGMusic, TheModArchive
+
 Code - Me
+
+## Tools used
+Scratch 2
+mid2s3m
+RealWorld Paint
+Mmutil
+Bin2s
+Ms Visual studio
+Devkitarm
+Usenti
