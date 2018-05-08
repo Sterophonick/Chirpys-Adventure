@@ -1,0 +1,13 @@
+[EDITOR]
+Version=0,01
+[LEVEL]
+Path=demo.led
+Rows=20
+Columns=150
+[TEXTURE]
+Path=shooter.bmp
+Rows=32
+Columns=32
+[TILES]
+Width=8
+Height=8

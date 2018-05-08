@@ -1,0 +1,12 @@
+#define SFX_B_DED	0
+#define SFX_B_JUMP	1
+#define SFX_B_SHOOT	2
+#define SFX_B_STEP	3
+#define MOD_CREDITS	0
+#define MOD_WORLD1	1
+#define MOD_WORLD2	2
+#define MOD_WORLD3	3
+#define MOD_WORLD4	4
+#define MSL_NSONGS	5
+#define MSL_NSAMPS	131
+#define MSL_BANKSIZE	136
