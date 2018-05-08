@@ -1,4 +1,4 @@
-# Plumee and the Quest of the Missing Nest
+# Chirpy's Adventure
 An original GBA game based on my unfinished prototype of a scrolling platforming game on Scratch.
 
 # The game
