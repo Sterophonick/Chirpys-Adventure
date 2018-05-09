@@ -9,7 +9,7 @@ typedef struct
 	u8 lives;
 	u8 animframe;
 	u8 animstate;
-	u8 flight;
+	u8 flight
 }player;
 
 typedef struct
@@ -57,6 +57,7 @@ typedef struct
 	u16 rngseed;
 	u8 selection;
 	u32 i;
+	u32 score;
 }rom;
 
 typedef struct
@@ -102,6 +103,23 @@ const unsigned short f_23Tiles[128];
 const unsigned short f_24Tiles[128];
 const unsigned short f_25Tiles[128];
 const unsigned short f_fullTiles[128];
+
+const unsigned short h_halfTiles[64];
+const unsigned short h_fullTiles[64];
+const unsigned short h_emptyTiles[64];
+const unsigned short heartPal[16];
+
+const unsigned short b_idlePal[16];
+const unsigned short h_headTiles[16];
+const unsigned short b_idleTiles[64];
+const unsigned short b_fireTiles[16];
+
+const unsigned short hudTextPal[16];
+const unsigned short h_numsTiles[160];
+const unsigned short h_xTiles[16];
+const unsigned short h_stageTiles[128];
+const unsigned short h_flightTiles[512];
+
 extern int hrt_offsetOAMData;
 extern int hrt_offsetOAMPal;
 extern int hrt_offsetBGMap;

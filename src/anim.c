@@ -11,3 +11,8 @@ void animflight()
 			hrt_LoadOBJGFX
 	}
 }
+
+void animlife()
+{
+
+}

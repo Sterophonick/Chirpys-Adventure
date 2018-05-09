@@ -1,0 +1,13 @@
+[EDITOR]
+Version=0.01
+[LEVEL]
+Path=C:\Users\nickm\Desktop\Code\Game Boy Advance\Chirpy's Adventure\data\maps\level3.led
+Rows=20
+Columns=150
+[TEXTURE]
+Path=C:\Users\nickm\Desktop\Code\Game Boy Advance\Chirpy's Adventure\data\maps\tiles01.bmp
+Rows=1
+Columns=22
+[TILES]
+Width=16
+Height=16
