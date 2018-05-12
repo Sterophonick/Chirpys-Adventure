@@ -41,3 +41,7 @@ Animation - somewhat completed
 Menu - somewhat completed
 
 Maps - only 3 out of 16 completed.
+
+Graphics - Probably around 60% or so.
+
+Audio - Probably around 65%?
