@@ -1,0 +1,13 @@
+[EDITOR]
+Version=0.01
+[LEVEL]
+Path=C:\Users\nickm\Desktop\Code\Game Boy Advance\Chirpy's Adventure\data\maps\credits.led
+Rows=32
+Columns=32
+[TEXTURE]
+Path=C:\Users\nickm\Desktop\Code\Game Boy Advance\Chirpy's Adventure\data\spr\font_milkbottle.bmp
+Rows=95
+Columns=1
+[TILES]
+Width=8
+Height=8
