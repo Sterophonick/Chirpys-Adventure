@@ -7,6 +7,7 @@
 #define MOD_WORLD2	2
 #define MOD_WORLD3	3
 #define MOD_WORLD4	4
-#define MSL_NSONGS	5
-#define MSL_NSAMPS	131
-#define MSL_BANKSIZE	136
+#define MOD_THEME	5
+#define MSL_NSONGS	6
+#define MSL_NSAMPS	152
+#define MSL_BANKSIZE	158

@@ -2,80 +2,457 @@
 #include "..\inc\defs.h"
 #include "..\inc\soundbank.h"
 map demolevel;
-rom demo;
+rom game;
 snd audio;
 player bird;
+GameMap gGameMap;
+gmenu menu;
+int xtemp;
+int ytemp;
+u8 xt;
+u8 yt;
+
 
 int main()
 {
-	u32 y;
-	u32 x;
 	hrt_EnableSoftReset();
 	hrt_InitNoIntro();
 	mmInitDefault((mm_addr)soundbank_bin, 8);
-	demolevel.yscroll = 480;
-	hrt_LoadBGTiles((void*)level1Tiles, 832);
-	hrt_LoadBGPal((void*)level1Pal, 16);
-	hrt_SetDSPMode(0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0);
-	hrt_ConfigBG(0, 0, 1, 1, 0, 0, 1, 0);
 	REG_SOUNDCNT_H = 0x330E;
-	mmStart(MOD_WORLD2, MM_PLAY_LOOP);
-	hrt_LoadOBJPal((void*)b_idlePal, 16);
-	hrt_LoadOBJGFX((void*)b_idleTiles, 64);
-	hrt_LoadOBJGFX((void*)b_fireTiles, 16);
-	hrt_LoadOBJGFX((void*)h_headTiles, 16);
-	hrt_LoadOBJGFX((void*)h_flightTiles, 96);
-	hrt_LoadOBJGFX((void*)h_xTiles, 16);
-	hrt_LoadOBJGFX((void*)h_stageTiles, 128);
-	hrt_LoadOBJGFX((u16*)&h_numsTiles, 16);
-	hrt_LoadOBJGFX((u16*)&h_numsTiles+48, 16);
-	hrt_offsetOAMData += 32;
-	hrt_LoadOBJGFX((u16*)&h_numsTiles+16, 16);
-	hrt_LoadOBJGFX((u16*)&h_numsTiles+16, 16);
-	hrt_LoadOBJGFX((void*)f_0Tiles, 112);
-	hrt_LoadOBJGFX((void*)h_emptyTiles, 64);
-	hrt_LoadOBJGFX((void*)h_halfTiles, 64);
-	hrt_LoadOBJGFX((void*)h_fullTiles, 64);
-	hrt_CreateOBJ(0, 120, 80, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-	hrt_CreateOBJ(1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 34);
-	hrt_CreateOBJ(2, 10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38);
-	hrt_CreateOBJ(3, 20, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42);
-	hrt_CreateOBJ(4, 40, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5);
-	hrt_CreateOBJ(5, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12);
-	hrt_CreateOBJ(6, 56, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 21);
-	hrt_CreateOBJ(7, 80, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 13);
-	hrt_CreateOBJ(8, 112, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 17);
-	hrt_CreateOBJ(9, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25);
-	hrt_CreateOBJ(10, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,26);
-	hrt_CreateOBJ(11, 208, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 27);
-	hrt_CreateOBJ(12, 160, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 6);
-	hrt_CreateOBJ(13, 192, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 10);
-	while (1)
+	hrt_LoadBGMap((void*)m_bg_Map, 1024);
+	hrt_offsetBGMap = 2048;
+	hrt_LoadBGMap((void*)m_title_Map, 1024);
+	hrt_LoadBGTiles((void*)m_title_Tiles, 1600);
+	hrt_offsetBGTile = 16384;
+	hrt_LoadBGTiles((void*)m_bg_Tiles, 864);
+	hrt_LoadBGPal((void*)m_bgPalette, 16);
+	REG_DISPCNT = 0x1640;
+	REG_BG1CNT = 0x0204;
+	REG_BG2CNT = 0x000C;
+	REG_BG1VOFS = 96;
+	hrt_SleepF(60);
+	hrt_LoadOBJPal((void*)m_continuePal, 16);
+	hrt_LoadOBJGFX((void*)m_yearTiles, 576);
+	hrt_LoadOBJGFX((void*)m_optionsTiles, 256);
+	hrt_LoadOBJGFX((void*)m_newgameTiles, 256);
+	hrt_LoadOBJGFX((void*)m_continueTiles, 256);
+	hrt_LoadOBJGFX((void*)m_exitTiles, 128);
+	for (game.i = 96; game.i < 257; game.i += 2)
 	{
 		hrt_VblankIntrWait();
-		hrt_offsetOAMData = 0;
-		hrt_offsetOAMPal = 0;
-		if (keyDown(KEY_UP))
+		REG_BG1VOFS = game.i;
+	}
+	hrt_SleepF(30);
+	hrt_CreateOBJ(0, 104, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
+	hrt_CreateOBJ(1, 120, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4);
+	hrt_CreateOBJ(2, 136, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 8);
+	hrt_CreateOBJ(3, 152, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 12);
+	hrt_CreateOBJ(4, 168, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 16);
+	hrt_CreateOBJ(5, 184, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 20);
+	hrt_CreateOBJ(6, 200, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 24);
+	hrt_CreateOBJ(7, 216, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 28);
+	hrt_CreateOBJ(8, 232, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32);
+	for (game.i = 0; game.i < 9; game.i++)
+	{
+		for (game.i2 = 0; game.i2 < 9; game.i2++)
 		{
-			demolevel.yscroll--;
+			hrt_SetOBJXY(&sprites[game.i2], (game.i2 * 16) + 104, 160 - game.i);
 		}
-		if (keyDown(KEY_DOWN))
+		hrt_VblankIntrWait();
+	}
+	hrt_CreateOBJ(9, 8, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 52);
+	hrt_CreateOBJ(10, 16, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 56);
+	hrt_CreateOBJ(11, 32, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 60);
+	hrt_CreateOBJ(12, 48, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 64);
+	for (game.i = 0; game.i < 120; game.i += 4)
+	{
+		for (game.i2 = 0; game.i2 < 5; game.i2++)
 		{
-			demolevel.yscroll++;
+			hrt_SetOBJXY(&sprites[game.i2 + 9], ((game.i2) * 16) + 8, 160 - game.i);
 		}
-		if (keyDown(KEY_LEFT))
+		hrt_VblankIntrWait();
+	}
+	hrt_CreateOBJ(13, 0, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 68);
+	hrt_CreateOBJ(14, 16, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 72);
+	hrt_CreateOBJ(15, 32, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 76);
+	hrt_CreateOBJ(16, 48, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 80);
+	for (game.i = 0; game.i < 112; game.i += 4)
+	{
+		for (game.i2 = 0; game.i2 < 5; game.i2++)
 		{
-			demolevel.xscroll--;
+			hrt_SetOBJXY(&sprites[game.i2 + 13], ((game.i2) * 16) + 8, 160 - game.i);
 		}
-		if (keyDown(KEY_RIGHT))
+		hrt_VblankIntrWait();
+	}
+	hrt_CreateOBJ(17, 0, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 36);
+	hrt_CreateOBJ(18, 16, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 40);
+	hrt_CreateOBJ(19, 32, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 44);
+	hrt_CreateOBJ(20, 48, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48);
+	for (game.i = 0; game.i < 104; game.i += 4)
+	{
+		for (game.i2 = 0; game.i2 < 5; game.i2++)
 		{
-			demolevel.xscroll++;
+			hrt_SetOBJXY(&sprites[game.i2 + 17], ((game.i2) * 16) + 8, 160 - game.i);
 		}
-		for (y = 0; y < 16; y++)
+		hrt_VblankIntrWait();
+	}
+	hrt_CreateOBJ(21, 0, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 84);
+	hrt_CreateOBJ(22, 16, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 88);
+	for (game.i = 0; game.i < 96; game.i += 4)
+	{
+		for (game.i2 = 0; game.i2 < 3; game.i2++)
 		{
-			for (x = 0; x < 16; x++)
+			hrt_SetOBJXY(&sprites[game.i2 + 21], ((game.i2) * 16) + 8, 160 - game.i);
+		}
+		hrt_VblankIntrWait();
+	}
+	hrt_LoadOBJPal((void*)m_arrow4Pal, 16);
+	hrt_LoadOBJGFX((void*)m_arrow1Tiles, 16);
+	hrt_CreateOBJ(23, 248, 44, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 92);
+	for (game.i = 0; game.i < 8; game.i++)
+	{
+		hrt_SetOBJXY(&sprites[23], 248+game.i, 44);
+	}
+	hrt_offsetOAMData -= 16;
+	u8 uplock = 0;
+	u8 downlock = 0;
+	while (1)
+	{
+		game.frames++;
+		hrt_VblankIntrWait();
+		if ((keyDown(KEY_UP))AND(!(menu.arpos == 0))AND(uplock == 0))
+		{
+			menu.arpos--;
+			uplock = 1;
+		}
+		if (!(keyDown(KEY_UP)))
+		{
+			uplock = 0;
+		}
+		if ((keyDown(KEY_DOWN))AND(!(menu.arpos == 3))AND(downlock == 0))
+		{
+			menu.arpos++;
+			downlock = 1;
+		}
+		if (!(keyDown(KEY_DOWN)))
+		{
+			downlock = 0;
+		}
+		hrt_SetOBJXY(&sprites[23], 0, (menu.arpos * 8) + 44);
+		if (!(game.frames % 3))
+		{
+			menu.arframe++;
+			if (menu.arframe == 7)
 			{
-				VRAM[y * 16 + x] = level1Map[y * 150 + x+2];
+				menu.arframe = 0;
+			}
+			if (menu.arframe == 0)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow1Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+			if (menu.arframe == 1)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow2Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+			if (menu.arframe == 2)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow3Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+			if (menu.arframe == 3)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow4Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+			if (menu.arframe == 4)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow3Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+			if (menu.arframe == 5)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow2Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+			if (menu.arframe == 6)
+			{
+				hrt_DMA_Copy(3, (u16*)m_arrow1Tiles, (u16*)0x06014b80, 16, 0x80000000);
+			}
+		}
+		if (keyDown(KEY_A))
+		{
+			if (menu.arpos == 2)
+			{
+				for (game.i = 0; game.i < 120; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 4; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 9], ((game.i2) * 16) + 8, 42 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 112; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 4; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 13], ((game.i2) * 16) + 8, 50 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 104; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 4; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 17], ((game.i2) * 16) + 8, 58 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 96; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 2; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 21], ((game.i2) * 16) + 8, 66 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				hrt_offsetOAMData = 0;
+				hrt_offsetOAMPal = 0;
+				hrt_offsetBGMap = 0;
+				hrt_offsetBGPal = 0;
+				hrt_offsetBGTile = 0;
+				hrt_LoadOBJGFX((void*)m_yearTiles, 576);
+				hrt_LoadOBJGFX((void*)m_musvolTiles, 208);
+				hrt_LoadOBJGFX((void*)m_sfxvolTiles, 176);
+				hrt_LoadOBJGFX((void*)m_creditsTiles, 112);
+				hrt_CreateOBJ(9, 8, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 52);
+				hrt_CreateOBJ(10, 24, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 54);
+				hrt_CreateOBJ(11, 8, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 52);
+				hrt_CreateOBJ(9, 8, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 52);
+			}
+			if (menu.arpos == 0)
+			{
+				for (game.i = 0; game.i < 9; game.i++)
+				{
+					for (game.i2 = 0; game.i2 < 9; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2], (game.i2 * 16) + 104, 152 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 120; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 4; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 9], ((game.i2) * 16) + 8, 42+ game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 112; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 4; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 13], ((game.i2) * 16) + 8, 50 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 104; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 4; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 17], ((game.i2) * 16) + 8, 58 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				for (game.i = 0; game.i < 96; game.i += 4)
+				{
+					for (game.i2 = 0; game.i2 < 2; game.i2++)
+					{
+						hrt_SetOBJXY(&sprites[game.i2 + 21], ((game.i2) * 16) + 8, 66 + game.i);
+					}
+					hrt_VblankIntrWait();
+				}
+				hrt_offsetOAMData = 0;
+				hrt_offsetOAMPal = 0;
+				hrt_offsetBGMap = 0;
+				hrt_offsetBGPal = 0;
+				hrt_offsetBGTile = 0;
+				hrt_DMA_Copy(3, (u8*)0x02000000, (u8*)VRAM, 0xFfff, 0x80800000);
+				hrt_DMA_Copy(3, (u8*)0x02000000, (u8*)BGPaletteMem, 0x200, 0x80800000);
+				hrt_DMA_Copy(3, (u8*)0x02000000, (u8*)&sprites, 0x3FF, 0x80800000);
+				hrt_CopyOAM();
+				hrt_LoadBGTiles((void*)level1Tiles, 832);
+				hrt_LoadBGPal((void*)level1Pal, 16);
+				hrt_SetDSPMode(0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0);
+				REG_BG0CNT = 0x1C04;
+				mmStart(MOD_WORLD1, MM_PLAY_LOOP);
+				hrt_LoadOBJPal((void*)b_idlePal, 16);
+				hrt_LoadOBJGFX((void*)b_idleTiles, 64);
+				hrt_LoadOBJGFX((void*)b_fireTiles, 16);
+				hrt_LoadOBJGFX((void*)h_headTiles, 16);
+				hrt_LoadOBJGFX((void*)h_flightTiles, 96);
+				hrt_LoadOBJGFX((void*)h_xTiles, 16);
+				hrt_LoadOBJGFX((void*)h_stageTiles, 128);
+				hrt_LoadOBJGFX((void*)h_numsTiles, 16);
+				game.genericptr = (u16*)&h_numsTiles + 48;
+				hrt_LoadOBJGFX((void*)game.genericptr, 16);
+				hrt_offsetOAMData += 32;
+				game.genericptr = (u16*)&h_numsTiles + 16;
+				hrt_LoadOBJGFX((void*)game.genericptr, 16);
+				game.genericptr = (u16*)&h_numsTiles + 16;
+				hrt_LoadOBJGFX((void*)game.genericptr, 16);
+				hrt_LoadOBJGFX((void*)f_fullTiles, 112);
+				hrt_LoadOBJGFX((void*)h_fullTiles, 64);
+				hrt_LoadOBJGFX((void*)h_halfTiles, 64);
+				hrt_LoadOBJGFX((void*)h_emptyTiles, 64);
+				hrt_CreateOBJ(0, 120, 80, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+				hrt_CreateOBJ(1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 34);
+				hrt_CreateOBJ(2, 10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38);
+				hrt_CreateOBJ(3, 20, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42);
+				hrt_CreateOBJ(4, 40, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5);
+				hrt_CreateOBJ(5, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12);
+				hrt_CreateOBJ(6, 56, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 21);
+				hrt_CreateOBJ(7, 80, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 13);
+				hrt_CreateOBJ(8, 112, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 17);
+				hrt_CreateOBJ(9, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25);
+				hrt_CreateOBJ(10, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26);
+				hrt_CreateOBJ(11, 208, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 27);
+				hrt_CreateOBJ(12, 160, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 6);
+				hrt_CreateOBJ(13, 192, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 10);
+				gGameMap.numLayers = 1;
+				gGameMap.layer->map = (void*)level1MetaMap;
+				gGameMap.dimensions.x = 150;
+				gGameMap.dimensions.y = 20;
+				gGameMap.layer[1].scroll.y = 0;
+				gGameMap.layer[1].scroll.x = 0;
+				gGameMap.tileset = (void*)level1MetaTiles;
+				u32 j, i;
+				for (i = 0; i < gGameMap.numLayers; i++)
+					for (j = 0; j < 32; j++)
+						MapLayerDrawStripH(i, fptochar(gGameMap.layer[i].scroll.y) + j);
+				bird.ypos = 120;
+				while (1)
+				{
+					hrt_VblankIntrWait();
+					if (keyDown(KEY_UP))
+					{
+						if (!(demolevel.yscroll == 0))
+						{
+							demolevel.loadylock = 0;
+							demolevel.yscroll -= 3;
+							if (demolevel.yscroll < 0)
+							{
+								demolevel.yscroll = 0;
+							}
+							demolevel.newY = demolevel.yscroll;
+							if ((demolevel.oldY / 8 != demolevel.newY / 8)AND(demolevel.loadylock == 0))
+							{
+								demolevel.oldY = demolevel.newY;
+								for (i = 0; i < gGameMap.numLayers; i++)
+								{
+									gGameMap.layer[i].scroll.y = inttofp(demolevel.yscroll);
+									MapLayerDrawStripH(i, fptochar(gGameMap.layer[i].scroll.y));
+								}
+								demolevel.loadylock++;
+							}
+						}
+					}
+					if (keyDown(KEY_DOWN))
+					{
+						if (!(demolevel.yscroll == 160))
+						{
+							demolevel.loadylock = 0;
+							demolevel.yscroll += 3;
+							if (demolevel.yscroll > 160)
+							{
+								demolevel.yscroll = 160;
+							}
+							demolevel.newY = demolevel.yscroll;
+							if ((demolevel.oldY / 8 != demolevel.newY / 8)AND(demolevel.loadylock == 0))
+							{
+								demolevel.oldY = demolevel.newY;
+								for (i = 0; i < gGameMap.numLayers; i++)
+								{
+									gGameMap.layer[i].scroll.y = inttofp(demolevel.yscroll);
+									MapLayerDrawStripH(i, fptochar(gGameMap.layer[i].scroll.y) + 31);
+								}
+								demolevel.loadylock++;
+							}
+						}
+					}
+					if (keyDown(KEY_LEFT))
+					{
+						if (!(demolevel.xscroll == 0))
+						{
+							demolevel.loadxlock = 0;
+							demolevel.xscroll -= 3;
+							if (demolevel.xscroll < 0)
+							{
+								demolevel.xscroll = 0;
+							}
+							demolevel.newX = demolevel.xscroll;
+							if ((demolevel.oldX / 8 != demolevel.newX / 8)AND(demolevel.loadxlock == 0))
+							{
+								demolevel.oldX = demolevel.newX;
+								for (i = 0; i < gGameMap.numLayers; i++)
+								{
+									gGameMap.layer[i].scroll.x = inttofp(demolevel.xscroll);
+									MapLayerDrawStripV(i, fptochar(gGameMap.layer[i].scroll.x));
+								}
+								demolevel.loadxlock++;
+							}
+						}
+					}
+					if (keyDown(KEY_RIGHT))
+					{
+						if (!(demolevel.xscroll == 2400 - 240))
+						{
+							demolevel.loadxlock = 0;
+							demolevel.xscroll += 3;
+							demolevel.newX = demolevel.xscroll;
+							if ((demolevel.oldX / 8 != demolevel.newX / 8)AND(demolevel.loadxlock == 0))
+							{
+								demolevel.oldX = demolevel.newX;
+								for (i = 0; i < gGameMap.numLayers; i++)
+								{
+									gGameMap.layer[i].scroll.x = inttofp(demolevel.xscroll);
+									MapLayerDrawStripV(i, fptochar(gGameMap.layer[i].scroll.x) + 31);
+								}
+								demolevel.loadxlock++;
+							}
+						}
+					}
+					hrt_EditBG(0, demolevel.xscroll, demolevel.yscroll, 0, 0, 0, 0, 0);
+					if (keyDown(KEY_L))
+					{
+						if ((!(bird.flight == 0)AND(bird.flightlock == 0)))
+						{
+							bird.flight--;
+							animflight();
+						}
+					}
+					else {
+						if (!(bird.flight == 26))
+						{
+							if (bird.flightlock == 0)
+							{
+								bird.flight++;
+								animflight();
+							}
+						}
+					}
+					if (bird.flight == 0)
+					{
+						bird.flightlock = 1;
+					}
+					if (bird.flightlock == 1)
+					{
+						if (!(bird.flight == 26))
+						{
+							bird.flight++;
+							animflight();
+						}
+						else {
+							bird.flightlock = 0;
+						}
+					}
+					hrt_SetOBJXY(&sprites[0], bird.xpos, bird.ypos);
+				}
 			}
 		}
 	}
