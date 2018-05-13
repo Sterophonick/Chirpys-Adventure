@@ -1,4 +1,5 @@
 void hrt_InitNoIntro();
+
 typedef struct
 {
 	u32 xpos;
@@ -139,6 +140,11 @@ const unsigned short level1MetaTiles[84];
 const unsigned short level1MetaMap[3000];
 const unsigned short level1Pal[16];
 
+const unsigned short level2Tiles[736];
+const unsigned short level2MetaTiles[80];
+const unsigned short level2MetaMap[3000];
+const unsigned short level2Pal[16];
+
 const unsigned short f_0Tiles[64];
 const unsigned short f_0Pal[16];
 const unsigned short f_1Tiles[64];
@@ -221,3 +227,8 @@ const unsigned char m_bg_Tiles[864];
 const unsigned short m_title_Map[1024];
 const unsigned char m_title_Tiles[1600];
 const unsigned short m_bgPalette[16];
+
+const unsigned short disclaimerBitmap[2514];
+const unsigned short disclaimerPal[16];
+const unsigned short creditsBitmap[2466];
+const unsigned short creditsPal[16];

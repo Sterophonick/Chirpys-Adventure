@@ -1,18 +1,19 @@
 STATUS: Validatating gr.
 WARNING:   No explicit src path.
 STATUS: Validation succeeded.
-STATUS: Started run at: 2018-05-11, 15:59:24
+STATUS: Started run at: 2018-05-13, 11:31:16
 STATUS: Validatating gr.
 STATUS: Validation succeeded.
 STATUS: Preparing data.
 STATUS: Work-DIB creation.
-STATUS: Work-DIB creation complete: 104x8@8.
+STATUS: Work-DIB creation complete: 240x160@8.
 STATUS: Tile preparation.
-STATUS:   tiling to 8x8 tiles.
 STATUS: Tile preparation complete.
 STATUS: Graphics preparation.
-STATUS:   Bitpacking: 8 -> 4.
+STATUS: Compressing: 01
 STATUS: Graphics preparation complete.
+STATUS: Palette preparation.
+STATUS: Palette preparation complete.
 STATUS: Data preparation complete.
-STATUS: Export to C: m_musvol into C:\Users\nickm\Desktop\Code\Game Boy Advance\Chirpy's Adventure\src\m_musvol.c .
+STATUS: Export to C: credits into C:\Users\nickm\Desktop\Code\Game Boy Advance\Chirpy's Adventure\src\credits.c .
 STATUS: Run completed :).
