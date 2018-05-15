@@ -1,11 +1,11 @@
-# Chirpy's Adventure
+﻿# Chirpy's Adventure
 An original GBA game based on my unfinished prototype of a scrolling platforming game on Scratch.
 
 # The game
 Story: Chirpy the bird comes back to his nest from going out to lunch. However, he is shocked to find that his nest has gone missing. He finds footprints nearby the tree, and decides to follow them to get his nest back!
 
 ## Technical Aspects
-This game is going to be my most technically advanced GBA game. It will of course, use HeartLib. The game will have four worlds, each with eight levels. The sound engine will be MaxMod. The game will be a parallax side-scrolling platformer. There will be a working hud created using sprites. The game will be written in C, and compiled with DevKitARM. There will be some LZ77 compression.
+This game is going to be my most technically advanced GBA game. It will of course, use HeartLib. The game will have four worlds, each with four levels. The sound engine will be MaxMod. The game will be a parallax side-scrolling platformer. There will be a working hud created using sprites. The game will be written in C with HeartLib, and compiled with DevKitARM. There will be some LZ77 compression. There is going to be some interactable objects onscreen.
 
 ## Resources
 GFX - Me, with help fro  DekuTree64 and Dwedit.
@@ -38,10 +38,12 @@ Scrolling - completed
 
 Animation - somewhat completed
 
-Menu - somewhat completed
+Menu - roughly 75% completed
 
 Maps - only 3 out of 16 completed.
 
 Graphics - Probably around 60% or so.
 
-Audio - Probably around 65%?
+Audio - Probably around 75%?
+
+Collision - 1% complete?

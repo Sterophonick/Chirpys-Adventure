@@ -10,7 +10,8 @@ FearOfDark
 Me
 Scratch
 DevKitARM
+TobyFox
 
 Code - Me, DekuTree64
 GFX - Me, Insequearaux, DuckyMaster
-Audio - ModArchive, Yacht Club Games, VGMusic, FearOfDark
+Audio - ModArchive, Yacht Club Games, VGMusic, FearOfDark, TobyFox, Renegade Kid

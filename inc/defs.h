@@ -14,6 +14,8 @@ typedef struct
 	u8 continues;
 	u8 jumpi;
 	u8 flightlock;
+	u8 tilex;
+	u8 tiley;
 }player;
 
 typedef struct
@@ -31,14 +33,14 @@ typedef struct
 	u8 tileY;
 	u8 loadxlock;
 	u8 loadylock;
+	u8* colmap;
 }map;
 
 typedef struct
 {
-	mm_sfxhand world1;
-	mm_sfxhand world2;
-	mm_sfxhand world3;
-	mm_sfxhand world4;
+	mm_sfxhand menusel;
+	mm_sfxhand menuconf;
+	mm_sfxhand pageflip;
 	mm_sfxhand b_jump;
 	mm_sfxhand b_step;
 	mm_sfxhand b_hurt;
@@ -46,7 +48,6 @@ typedef struct
 	mm_sfxhand b_shoot;
 	mm_sfxhand credits;
 	mm_sfxhand e_ded;
-	mm_sfxhand theme;
 }snd;
 
 typedef struct
@@ -62,7 +63,6 @@ typedef struct
 	u8 level;
 	u8 world;
 	u16 rngvalue;
-	u16 rngseed;
 	u8 selection;
 	u32 i;
 	u32 i2;
@@ -79,19 +79,20 @@ typedef struct
 {
 	u8 arpos;
 	u8 arframe;
+	u8 selection;
 }gmenu;
 
 typedef struct
 {
-	u8 top;
-	u8 bottom;
-	u8 left;
-	u8 right;
-	u8 top2;
-	u8 bottom2;
-	u8 left2;
-	u8 right2;
-}collision;
+	u8 topl;
+	u8 bottoml;
+	u8 leftu;
+	u8 rightu;
+	u8 topr;
+	u8 bottomr;
+	u8 leftd;
+	u8 rightd;
+}col;
 
 typedef struct
 {
@@ -111,6 +112,7 @@ typedef struct
 
 void MapLayerDrawStripH(int layerIdx, int srcY);
 void MapLayerDrawStripV(int layerIdx, int srcX);
+void detectcollision();
 
 #define BG_SCRN_VRAM(n) ((u16*)(0x6000000 + ((n) << 11))) 
 #define fptochar(x) ((x) >> 11) 
@@ -232,3 +234,14 @@ const unsigned short disclaimerBitmap[2514];
 const unsigned short disclaimerPal[16];
 const unsigned short creditsBitmap[2466];
 const unsigned short creditsPal[16];
+
+const unsigned char l1_1colmap[20][150];
+
+const unsigned short story1Bitmap[4632];
+const unsigned short story2Bitmap[4796];
+const unsigned short story3Bitmap[4798];
+const unsigned short story4Bitmap[4796];
+
+const unsigned short continueTiles[160];
+const unsigned short continuePal[16];
+const unsigned short continueMap[1024];
