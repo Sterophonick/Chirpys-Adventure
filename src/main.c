@@ -18,21 +18,21 @@ int main()
 		(int)(1.0f * (1 << 10)),	// rate
 		0,		// handle
 		255,	// volume
-		0,	// panning
+		128,	// panning
 	};
 	mm_sound_effect m_confirm = {
 		{ SFX_M_CONFIRM },			// id
 		(int)(1.0f * (1 << 10)),	// rate
 		0,		// handle
 		255,	// volume
-		0,	// panning
+		128,	// panning
 	};
 	mm_sound_effect s_page = {
 		{ SFX_S_PAGE },			// id
 		(int)(1.0f * (1 << 10)),	// rate
 		0,		// handle
 		255,	// volume
-		0,	// panning
+		128,	// panning
 	};
 	hrt_EnableSoftReset();
 	hrt_EnableRTC();
@@ -642,6 +642,7 @@ int main()
 				hrt_DMA_Copy(3, (u8*)0x02000AD0, (u8*)BGPaletteMem, 0x200, 0x80800000);
 				hrt_DMA_Copy(3, (u8*)0x02000AD0, (u8*)&sprites, 0x3FF,  0x80800000);
 				hrt_CopyOAM();
+				mmStart(MOD_STORY, MM_PLAY_LOOP);
 				hrt_SetDSPMode(3, //Mode
 					0,								  //CGB Mode
 					0,								  //Frame Select
@@ -729,7 +730,6 @@ int main()
 					hrt_SetFXLevel(game.i);
 					hrt_SleepF(1);
 				}
-				demolevel.colmap = l1_1colmap;
 				hrt_DMA_Copy(3, (u8*)0x02000AD0, (u8*)VRAM, 0xFfffF, 0x80800000);
 				hrt_DMA_Copy(3, (u8*)0x02000AD0, (u8*)BGPaletteMem, 0x200, 0x80800000);
 				hrt_LoadBGTiles((void*)level1Tiles, 832);
@@ -790,97 +790,12 @@ int main()
 					hrt_SetFXLevel(16 - game.i);
 					hrt_SleepF(1);
 				}
+				bird.animstate = 1;
 				while (1)
 				{
+					physics();
+					game.frames++;
 					hrt_VblankIntrWait();
-					if (keyDown(KEY_UP))
-					{
-						if (!(demolevel.yscroll == 0))
-						{
-							demolevel.loadylock = 0;
-							demolevel.yscroll -= 3;
-							if (demolevel.yscroll < 0)
-							{
-								demolevel.yscroll = 0;
-							}
-							demolevel.newY = demolevel.yscroll;
-							if ((demolevel.oldY / 8 != demolevel.newY / 8)AND(demolevel.loadylock == 0))
-							{
-								demolevel.oldY = demolevel.newY;
-								for (i = 0; i < gGameMap.numLayers; i++)
-								{
-									gGameMap.layer[i].scroll.y = inttofp(demolevel.yscroll);
-									MapLayerDrawStripH(i, fptochar(gGameMap.layer[i].scroll.y));
-								}
-								demolevel.loadylock++;
-							}
-						}
-					}
-					if (keyDown(KEY_DOWN))
-					{
-						if (!(demolevel.yscroll == 160))
-						{
-							demolevel.loadylock = 0;
-							demolevel.yscroll += 3;
-							if (demolevel.yscroll > 160)
-							{
-								demolevel.yscroll = 160;
-							}
-							demolevel.newY = demolevel.yscroll;
-							if ((demolevel.oldY / 8 != demolevel.newY / 8)AND(demolevel.loadylock == 0))
-							{
-								demolevel.oldY = demolevel.newY;
-								for (i = 0; i < gGameMap.numLayers; i++)
-								{
-									gGameMap.layer[i].scroll.y = inttofp(demolevel.yscroll);
-									MapLayerDrawStripH(i, fptochar(gGameMap.layer[i].scroll.y) + 31);
-								}
-								demolevel.loadylock++;
-							}
-						}
-					}
-					if (keyDown(KEY_LEFT))
-					{
-						if (!(demolevel.xscroll == 0))
-						{
-							demolevel.loadxlock = 0;
-							demolevel.xscroll -= 3;
-							if (demolevel.xscroll < 0)
-							{
-								demolevel.xscroll = 0;
-							}
-							demolevel.newX = demolevel.xscroll;
-							if ((demolevel.oldX / 8 != demolevel.newX / 8)AND(demolevel.loadxlock == 0))
-							{
-								demolevel.oldX = demolevel.newX;
-								for (i = 0; i < gGameMap.numLayers; i++)
-								{
-									gGameMap.layer[i].scroll.x = inttofp(demolevel.xscroll);
-									MapLayerDrawStripV(i, fptochar(gGameMap.layer[i].scroll.x));
-								}
-								demolevel.loadxlock++;
-							}
-						}
-					}
-					if (keyDown(KEY_RIGHT))
-					{
-						if (!(demolevel.xscroll == 2400 - 240))
-						{
-							demolevel.loadxlock = 0;
-							demolevel.xscroll += 3;
-							demolevel.newX = demolevel.xscroll;
-							if ((demolevel.oldX / 8 != demolevel.newX / 8)AND(demolevel.loadxlock == 0))
-							{
-								demolevel.oldX = demolevel.newX;
-								for (i = 0; i < gGameMap.numLayers; i++)
-								{
-									gGameMap.layer[i].scroll.x = inttofp(demolevel.xscroll);
-									MapLayerDrawStripV(i, fptochar(gGameMap.layer[i].scroll.x) + 31);
-								}
-								demolevel.loadxlock++;
-							}
-						}
-					}
 					hrt_EditBG(0, demolevel.xscroll, demolevel.yscroll, 0, 0, 0, 0, 0);
 					if (keyDown(KEY_L))
 					{
@@ -915,7 +830,6 @@ int main()
 							bird.flightlock = 0;
 						}
 					}
-					hrt_SetOBJXY(&sprites[0], bird.xpos, bird.ypos);
 				}
 			}
 		}

@@ -1,6 +1,8 @@
 #include <libheart.h>
 #include "..\inc\defs.h"
+#include "..\inc\soundbank.h"
 extern player bird;
+extern snd audio;
 #define BIRD_OAM 0
 #define HEART1_OAM 352
 #define HEART2_OAM 416
@@ -106,5 +108,47 @@ void animheart()
 
 void animbird()
 {
-
+	mm_sound_effect step = {
+		{ SFX_B_STEP },			// id
+		(int)(1.0f * (1 << 10)),	// rate
+		0,		// handle
+		255,	// volume
+		128,	// panning
+	};
+	hrt_offsetOAMData = 0;
+	if (bird.animstate == 1)
+	{
+		bird.animtimer++;
+		if (!(bird.animtimer % 10))
+		{
+			bird.animframe++;
+			if (bird.animframe == 4)
+			{
+				bird.animframe = 0;
+			}
+			if (bird.animframe == 0)
+			{
+				hrt_LoadOBJGFX((void*)b_run1Tiles, 64);
+			}
+			if (bird.animframe == 1)
+			{
+				hrt_LoadOBJGFX((void*)b_run2Tiles, 64);
+			}
+			if (bird.animframe == 2)
+			{
+				hrt_LoadOBJGFX((void*)b_run3Tiles, 64);
+			}
+			if (bird.animframe == 3)
+			{
+				hrt_LoadOBJGFX((void*)b_idleTiles, 64);
+			}
+			if (bird.animframe % 2)
+			{
+				audio.b_step = mmEffectEx(&step);
+			}
+		}
+	}
+	else {
+		hrt_LoadOBJGFX((void*)b_fallTiles, 64);
+	}
 }

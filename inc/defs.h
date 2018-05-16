@@ -1,11 +1,12 @@
 void hrt_InitNoIntro();
+void physics(void);
 
 typedef struct
 {
 	u32 xpos;
 	u32 ypos;
-	s8 yvel;
-	s8 xvel;
+	s16 yvel;
+	s16 xvel;
 	u8 health;
 	u8 lives;
 	u8 animframe;
@@ -14,8 +15,19 @@ typedef struct
 	u8 continues;
 	u8 jumpi;
 	u8 flightlock;
+	u8 oldx;
+	u8 oldy;
 	u8 tilex;
 	u8 tiley;
+	u8 ycoll;
+	u8 animtimer;
+	u8 firetimer;
+	u8 firex;
+	u8 firey;
+	u8 firecol_l;
+	u8 firecol_r;
+	u8 screenx;
+	u8 screeny;
 }player;
 
 typedef struct
@@ -113,6 +125,7 @@ typedef struct
 void MapLayerDrawStripH(int layerIdx, int srcY);
 void MapLayerDrawStripV(int layerIdx, int srcX);
 void detectcollision();
+void animbird();
 
 #define BG_SCRN_VRAM(n) ((u16*)(0x6000000 + ((n) << 11))) 
 #define fptochar(x) ((x) >> 11) 
@@ -192,6 +205,7 @@ const unsigned short b_run1_fTiles[64];
 const unsigned short b_run1Tiles[64];
 const unsigned short b_flapTiles[64];
 const unsigned short b_fall_fTiles[64];
+const unsigned short b_fallTiles[64];
 const unsigned short b_dieTiles[64];
 const unsigned short b_fireTiles[16];
 
@@ -235,13 +249,11 @@ const unsigned short disclaimerPal[16];
 const unsigned short creditsBitmap[2466];
 const unsigned short creditsPal[16];
 
-const unsigned char l1_1colmap[20][150];
+const unsigned char l1_1colmap[40][300];
 
 const unsigned short story1Bitmap[4632];
 const unsigned short story2Bitmap[4796];
 const unsigned short story3Bitmap[4798];
 const unsigned short story4Bitmap[4796];
 
-const unsigned short continueTiles[160];
-const unsigned short continuePal[16];
-const unsigned short continueMap[1024];
+const unsigned short continueBitmap[4560];
