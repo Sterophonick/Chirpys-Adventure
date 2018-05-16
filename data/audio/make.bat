@@ -1,2 +1,2 @@
-mmutil -osoundbank.bin -hsoundbank.h s_page.wav m_save.wav m_load.wav m_confirm.wav b_explode.wav b_trampoline.wav b_hurt.wav b_ded.wav b_jump.wav b_shoot.wav b_step.wav m_select.wav world1.s3m world2.xm world3.mod world4.s3m theme.s3m
+mmutil -osoundbank.bin -hsoundbank.h m_levelcomplete.wav s_page.wav m_save.wav m_load.wav m_confirm.wav b_explode.wav b_trampoline.wav b_hurt.wav b_ded.wav b_jump.wav b_shoot.wav b_step.wav m_select.wav world1.s3m world2.xm world3.mod world4.s3m theme.s3m story.xm
 bin2s soundbank.bin > soundbank.s
