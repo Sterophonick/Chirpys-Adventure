@@ -36,6 +36,8 @@ int main()
 	};
 	hrt_EnableSoftReset();
 	hrt_EnableRTC();
+	hrt_EnableCopyOAMOnVBL();
+	hrt_EnablemmFrameonVBL();
 	hrt_InitNoIntro();
 	unsigned char *p = (unsigned char*)&SaveFiles.RNGSeed;
 	p[0] = hrt_LoadByte(0x00);
@@ -61,7 +63,7 @@ int main()
 	hrt_SetFXLevel(31);
 	hrt_LZ77UnCompVRAM((u32)disclaimerBitmap, (u32)VRAM); //hrt_LZ77 decompresses disclaimer img
 	hrt_LoadBGPal((void*)disclaimerPal, 16);
-	hrt_offsetBGPal = 0;
+	hrt_SetOffset(OFF_BGPAL, 0);
 	for (game.i = 0; game.i < 17; game.i++) {
 		hrt_SetFXLevel(16 - game.i);
 		hrt_SleepF(1);
@@ -79,10 +81,10 @@ int main()
 	mmInitDefault((mm_addr)soundbank_bin, 8);
 	REG_SOUNDCNT_H = 0x330E;
 	hrt_LoadBGMap((void*)m_bg_Map, 1024);
-	hrt_offsetBGMap = 2048;
+	hrt_SetOffset(OFF_BGMAP, 2048);
 	hrt_LoadBGMap((void*)m_title_Map, 1024);
 	hrt_LoadBGTiles((void*)m_title_Tiles, 1600);
-	hrt_offsetBGTile = 16384;
+	hrt_SetOffset(OFF_BGTILE, 16384);
 	hrt_LoadBGTiles((void*)m_bg_Tiles, 864);
 	hrt_LoadBGPal((void*)m_bgPalette, 16);
 	REG_DISPCNT = 0x1640;
@@ -97,10 +99,7 @@ int main()
 	hrt_SleepF(60);
 	hrt_LoadOBJPal((void*)m_continuePal, 16);
 	hrt_LoadOBJGFX((void*)m_yearTiles, 576);
-	hrt_LoadOBJGFX((void*)m_optionsTiles, 256);
-	hrt_LoadOBJGFX((void*)m_newgameTiles, 256);
-	hrt_LoadOBJGFX((void*)m_continueTiles, 256);
-	hrt_LoadOBJGFX((void*)m_exitTiles, 128);
+	hrt_LoadOBJGFX((void*)m_pressstartTiles, 192);
 	for (game.i = 96; game.i < 257; game.i += 2)
 	{
 		hrt_VblankIntrWait();
@@ -124,10 +123,81 @@ int main()
 		}
 		hrt_VblankIntrWait();
 	}
+	hrt_CreateOBJ(9, 72, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 36);
+	hrt_CreateOBJ(10, 88, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 38);
+	hrt_CreateOBJ(11, 104, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 40);
+	hrt_CreateOBJ(12, 120, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 42);
+	hrt_CreateOBJ(13, 136, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 44);
+	hrt_CreateOBJ(14, 152, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 46);
+	for (game.i = 0; game.i < 45; game.i++)
+	{
+		for (game.i2 = 0; game.i2 < 6; game.i2++)
+		{
+			hrt_SetOBJXY(&sprites[game.i2+9], (game.i2 * 16) + 72, 160 - game.i);
+		}
+		hrt_VblankIntrWait();
+	}
+	u8 effecta = 0, effectb = 0;
+	int effectinc = 0;
+	hrt_SetFXMode(0, //BG 0 Target 1
+		0,                             //BG 1 Target 1
+		0,                             //BG 2 Target 1
+		0,                             //BG 3 Target 1
+		0,                             //OBJ Target 1
+		0,                             //Backdrop Target 1
+		1,                             //Blend Mode
+		0,                             //BG 0 Target 2
+		0,                             //BG 1 Target 2
+		1,                             //BG 2 Target 2
+		0,                             //BG 3 Target 2
+		0,                             //OBJ Target 2
+		1);                           //Backdrop Target 2
+	while (!(keyDown(KEY_START)))
+	{
+		hrt_VblankIntrWait();
+		if (16 == effecta) {
+			effectinc = -1;
+		}
+		if (0 == effecta) {
+			effectinc = 1;
+		}
+		hrt_SetFXAlphaLevel(effecta,             // Source intensity
+			16 - effectb);
+		effecta += effectinc;
+		effectb += effectinc;
+	}
+	audio.menuconf = mmEffectEx(&m_confirm);
+	hrt_SetFXMode(0, //BG 0 Target 1
+		0,                             //BG 1 Target 1
+		0,                             //BG 2 Target 1
+		0,                             //BG 3 Target 1
+		0,                             //OBJ Target 1
+		0,                             //Backdrop Target 1
+		0,                             //Blend Mode
+		0,                             //BG 0 Target 2
+		0,                             //BG 1 Target 2
+		0,                             //BG 2 Target 2
+		0,                             //BG 3 Target 2
+		0,                             //OBJ Target 2
+		0);                           //Backdrop Target 2
+	hrt_SetOBJXY(&sprites[9], 240, 160);
+	hrt_SetOBJXY(&sprites[10], 240, 160);
+	hrt_SetOBJXY(&sprites[11], 240, 160);
+	hrt_SetOBJXY(&sprites[12], 240, 160);
+	hrt_SetOBJXY(&sprites[13], 240, 160);
+	hrt_SetOBJXY(&sprites[14], 240, 160);
+	hrt_CopyOAM();
+	hrt_SetOffset(OFF_OAMDATA, 0);
+	hrt_LoadOBJGFX((void*)m_yearTiles, 576);
+	hrt_LoadOBJGFX((void*)m_optionsTiles, 256);
+	hrt_LoadOBJGFX((void*)m_newgameTiles, 256);
+	hrt_LoadOBJGFX((void*)m_continueTiles, 256);
+	hrt_LoadOBJGFX((void*)m_exitTiles, 128);
 	hrt_CreateOBJ(9, 8, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 52);
 	hrt_CreateOBJ(10, 16, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 56);
 	hrt_CreateOBJ(11, 32, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 60);
 	hrt_CreateOBJ(12, 48, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 64);
+	hrt_CreateOBJ(13, 48, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0xff);
 	for (game.i = 0; game.i < 120; game.i += 4)
 	{
 		for (game.i2 = 0; game.i2 < 5; game.i2++)
@@ -177,7 +247,7 @@ int main()
 	{
 		hrt_SetOBJXY(&sprites[23], 248+game.i, 44);
 	}
-	hrt_offsetOAMData -= 16;
+	hrt_SetOffset(OFF_OAMDATA, hrt_GetOffset(OFF_OAMDATA) - 16);
 	u8 uplock = 0;
 	u8 downlock = 0;
 	while (1)
@@ -319,11 +389,11 @@ int main()
 					}
 					hrt_VblankIntrWait();
 				}
-				hrt_offsetOAMData = 0;
-				hrt_offsetOAMPal = 0;
-				hrt_offsetBGMap = 0;
-				hrt_offsetBGPal = 0;
-				hrt_offsetBGTile = 0;
+				hrt_SetOffset(OFF_OAMDATA, 0);
+				hrt_SetOffset(OFF_OAMPAL, 0);
+				hrt_SetOffset(OFF_BGMAP, 0);
+				hrt_SetOffset(OFF_BGPAL, 0);
+				hrt_SetOffset(OFF_BGTILE, 0);
 				hrt_LoadOBJGFX((void*)m_yearTiles, 576);
 				hrt_LoadOBJGFX((void*)m_musvolTiles, 208);
 				hrt_LoadOBJGFX((void*)m_sfxvolTiles, 176);
@@ -477,8 +547,8 @@ int main()
 								}
 								hrt_VblankIntrWait();
 							}
-							hrt_offsetOAMPal = 0;
-							hrt_offsetOAMData = 0;
+							hrt_SetOffset(OFF_OAMDATA, 0);
+							hrt_SetOffset(OFF_OAMPAL, 0);
 							hrt_LoadOBJPal((void*)m_continuePal, 16);
 							hrt_LoadOBJGFX((void*)m_yearTiles, 576);
 							hrt_LoadOBJGFX((void*)m_optionsTiles, 256);
@@ -540,9 +610,9 @@ int main()
 								hrt_SetFXLevel(game.i);
 								hrt_SleepF(1);
 							}
-							hrt_offsetBGMap = 0;
-							hrt_offsetBGTile = 0;
-							hrt_offsetBGPal = 0;
+							hrt_SetOffset(OFF_BGMAP, 0);
+							hrt_SetOffset(OFF_BGTILE, 0);
+							hrt_SetOffset(OFF_BGPAL, 0);
 							hrt_SetDSPMode(4, //Mode
 								0,								  //CGB Mode
 								0,								  //Frame Select
@@ -562,9 +632,9 @@ int main()
 							hrt_SetFXLevel(31);
 							hrt_LZ77UnCompVRAM((u32)creditsBitmap, (u32)VRAM); //hrt_LZ77 decompresses disclaimer img
 							hrt_LoadBGPal((void*)creditsPal, 16);
-							hrt_offsetBGMap = 0;
-							hrt_offsetBGTile = 0;
-							hrt_offsetBGPal = 0;
+							hrt_SetOffset(OFF_BGMAP, 0);
+							hrt_SetOffset(OFF_BGTILE, 0);
+							hrt_SetOffset(OFF_BGPAL, 0);
 							for (game.i = 0; game.i < 17; game.i++) {
 								hrt_SetFXLevel(16-game.i);
 								hrt_SleepF(1);
@@ -578,10 +648,10 @@ int main()
 								hrt_SleepF(1);
 							}
 							hrt_LoadBGMap((void*)m_bg_Map, 1024);
-							hrt_offsetBGMap = 2048;
+							hrt_SetOffset(OFF_BGMAP, 2048);
 							hrt_LoadBGMap((void*)m_title_Map, 1024);
 							hrt_LoadBGTiles((void*)m_title_Tiles, 1600);
-							hrt_offsetBGTile = 16384;
+							hrt_SetOffset(OFF_BGTILE, 16384);
 							hrt_LoadBGTiles((void*)m_bg_Tiles, 864);
 							hrt_LoadBGPal((void*)m_bgPalette, 16);
 							REG_DISPCNT = 0x1640;
@@ -629,14 +699,15 @@ int main()
 					hrt_VblankIntrWait();
 				}
 				for (game.i = 0; game.i < 17; game.i++) {
+					mmSetModuleVolume(1024 - game.i * 16);
 					hrt_SetFXLevel(game.i);
 					hrt_SleepF(1);
 				}
-				hrt_offsetOAMData = 0;
-				hrt_offsetOAMPal = 0;
-				hrt_offsetBGMap = 0;
-				hrt_offsetBGPal = 0;
-				hrt_offsetBGTile = 0;
+				hrt_SetOffset(OFF_OAMDATA, 0);
+				hrt_SetOffset(OFF_OAMPAL, 0);
+				hrt_SetOffset(OFF_BGMAP, 0);
+				hrt_SetOffset(OFF_BGPAL, 0);
+				hrt_SetOffset(OFF_BGTILE, 0);
 				mmStop();
 				hrt_DMA_Copy(3, (u8*)0x02000AD0, (u8*)VRAM, 0xFfffF, 0x80800000);
 				hrt_DMA_Copy(3, (u8*)0x02000AD0, (u8*)BGPaletteMem, 0x200, 0x80800000);
@@ -746,7 +817,7 @@ int main()
 				hrt_LoadOBJGFX((void*)h_numsTiles, 16);
 				game.genericptr = (u16*)&h_numsTiles + 48;
 				hrt_LoadOBJGFX((void*)game.genericptr, 16);
-				hrt_offsetOAMData += 32;
+				hrt_SetOffset(OFF_OAMDATA, hrt_GetOffset(OFF_OAMDATA)+32);
 				game.genericptr = (u16*)&h_numsTiles + 16;
 				hrt_LoadOBJGFX((void*)game.genericptr, 16);
 				game.genericptr = (u16*)&h_numsTiles + 16;
@@ -781,16 +852,22 @@ int main()
 				gGameMap.layer[1].scroll.y = 0;
 				gGameMap.layer[1].scroll.x = 0;
 				gGameMap.tileset = (void*)level1MetaTiles;
+				bird.ypos = 0;
+				bird.tiley = 0;
+				demolevel.yscroll = 0;
+				demolevel.tileY = 0;
+				demolevel.oldY = 0;
+				bird.screeny = 0;
 				u32 j, i;
 				for (i = 0; i < gGameMap.numLayers; i++)
 					for (j = 0; j < 32; j++)
 						MapLayerDrawStripH(i, fptochar(gGameMap.layer[i].scroll.y) + j);
-				bird.ypos = 120;
 				for (game.i = 0; game.i < 17; game.i++) {
 					hrt_SetFXLevel(16 - game.i);
 					hrt_SleepF(1);
 				}
 				bird.animstate = 1;
+				mmSetModuleVolume(0);
 				while (1)
 				{
 					physics();

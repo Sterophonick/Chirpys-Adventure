@@ -12,6 +12,13 @@ sram SaveFiles;
 
 void physics(void)
 {
+	mm_sound_effect b_jump = {
+		{ SFX_B_JUMP },			// id
+		(int)(1.0f * (1 << 10)),	// rate
+		0,		// handle
+		255,	// volume
+		128,	// panning
+	};
 	if (bird.oldx / 8 != bird.xpos / 8)
 	{
 		bird.tilex = bird.xpos / 8;
@@ -21,21 +28,6 @@ void physics(void)
 		bird.tiley = bird.ypos / 8;
 	}
 	
-	if (!((collision.bottoml == 1)OR(collision.bottomr == 1)))
-	{
-		
-		if (bird.yvel > -8)
-		{
-			bird.yvel = -8;
-		}
-	}
-	if (keyDown(KEY_A))
-	{
-		if ((collision.bottoml == 1)OR(collision.bottomr == 1))
-		{
-			bird.yvel = 20;
-		}
-	}
 	if (keyDown(KEY_LEFT))
 	{
 		hrt_CreateOBJ(0, bird.screenx, bird.screeny, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -55,11 +47,18 @@ void physics(void)
 	if (bird.xvel < 0)
 	{
 		bird.xvel++;
+		bird.animstate = 1;
 		animbird();
 	}
 	if (bird.xvel > 0)
 	{
 		bird.xvel--;
+		bird.animstate = 1;
+		animbird();
+	}
+	if (bird.xvel == 0)
+	{
+		bird.animstate = 0;
 		animbird();
 	}
 	if (bird.xvel > 8)
@@ -70,9 +69,34 @@ void physics(void)
 	{
 		bird.xvel = -8;
 	}
+	if (!(keyDown(KEY_A)))
+	{
+		game.alock = 0;
+	}
 	if ((collision.bottoml == 1)OR(collision.bottomr == 1))
 	{
 		bird.yvel = 0;
+		if ((keyDown(KEY_A))AND(game.alock = 0))
+		{
+			bird.animstate = 2;
+			audio.b_jump = mmEffectEx(&b_jump);
+			bird.yvel = 16;
+			game.alock = 1;
+		}
+	}
+	else {
+		bird.animstate = 2;
+		if (!(bird.yvel > -8))
+		{
+			bird.yvel -= 1;
+		}
+		else {
+			bird.yvel = -8;
+		}
+		if (bird.yvel > -16)
+		{
+			bird.yvel = -16;
+		}
 	}
 	if ((collision.topl == 1)OR(collision.topr == 1))
 	{
@@ -80,17 +104,20 @@ void physics(void)
 	}
 	bird.screenx += bird.xvel / 4;
 	bird.screeny += bird.yvel / 4;
+	bird.xpos += bird.xvel / 4;
+	bird.ypos+= bird.yvel / 4;
 	if (bird.screenx > 152)
 	{
-		if (bird.screenx > 220)
+		if (bird.screenx >= 220)
 		{
 			if (keyDown(KEY_RIGHT))
 			{
 				bird.screenx = 224;
 				bird.xvel = 0;
+				demolevel.xscroll = 2400 - 240;
 			}
 		}
-		if (!(demolevel.xscroll == 2400 - 240))
+		if (!(demolevel.xscroll >= 2400 - 240))
 		{
 			demolevel.loadxlock = 0;
 			demolevel.xscroll += bird.screenx-152;
@@ -110,15 +137,16 @@ void physics(void)
 	}
 	if (bird.screenx < 72)
 	{
-		if (bird.screenx < 4)
+		if (bird.screenx <= 4)
 		{
 			if (keyDown(KEY_LEFT))
 			{
 				bird.screenx = 0;
 				bird.xvel = 0;
+				demolevel.xscroll = 0;
 			}
 		}
-		if (!(demolevel.xscroll == 0))
+		if (!(demolevel.xscroll <= 0))
 		{
 			demolevel.loadxlock = 0;
 			demolevel.xscroll -= 72 - bird.screenx;
@@ -188,5 +216,4 @@ void physics(void)
 			}
 		}
 	}
-	
 }

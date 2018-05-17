@@ -1,13 +1,13 @@
 [EDITOR]
 Version=0.01
 [LEVEL]
-Path=level2_1.led
+Path=level1_4.led
 Rows=20
 Columns=150
 [TEXTURE]
-Path=tiles02.bmp
+Path=tiles01.bmp
 Rows=1
-Columns=21
+Columns=22
 [TILES]
 Width=16
 Height=16

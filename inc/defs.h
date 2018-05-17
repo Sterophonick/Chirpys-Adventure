@@ -26,23 +26,23 @@ typedef struct
 	u8 firey;
 	u8 firecol_l;
 	u8 firecol_r;
-	u8 screenx;
-	u8 screeny;
+	u32 screenx;
+	u32 screeny;
 }player;
 
 typedef struct
 {
 	s32 xscroll;
 	s32 yscroll;
-	u32 oldY;
-	u32 newY;
-	u32 oldX;
-	u32 newX;
+	s32 oldY;
+	s32 newY;
+	s32 oldX;
+	s32 newX;
 	u16* tiledata;
 	u16* mapData;
 	u16* palData;
-	u8 tileX;
-	u8 tileY;
+	u16 tileX;
+	u16 tileY;
 	u8 loadxlock;
 	u8 loadylock;
 	u8* colmap;
@@ -55,6 +55,7 @@ typedef struct
 	mm_sfxhand pageflip;
 	mm_sfxhand b_jump;
 	mm_sfxhand b_step;
+	mm_sfxhand b_step2;
 	mm_sfxhand b_hurt;
 	mm_sfxhand b_ded;
 	mm_sfxhand b_shoot;
@@ -209,7 +210,8 @@ const unsigned short b_fallTiles[64];
 const unsigned short b_dieTiles[64];
 const unsigned short b_fireTiles[16];
 
-const unsigned short e_cralenTiles[64];
+const unsigned short e_cralen1Tiles[64];
+const unsigned short e_cralen2Tiles[64];
 
 const unsigned short hudTextPal[16];
 const unsigned short h_numsTiles[160];
@@ -238,6 +240,8 @@ const unsigned short m_arrow4Pal[16];
 const unsigned short m_arrow3Tiles[16];
 const unsigned short m_arrow2Tiles[16];
 const unsigned short m_arrow1Tiles[16];
+const unsigned short m_startgameTiles[160];
+const unsigned short m_pressstartTiles[192];
 const unsigned short m_bg_Map[1024];
 const unsigned char m_bg_Tiles[864];
 const unsigned short m_title_Map[1024];
