@@ -8,6 +8,35 @@ extern snd audio;
 #define HEART2_OAM 416
 #define HEART3_OAM 480
 
+void animbirdmap()
+{
+		bird.animtimer++;
+		if (!(bird.animtimer % 10))
+		{
+			bird.animframe++;
+			if (bird.animframe == 4)
+			{
+				bird.animframe = 0;
+			}
+			if (bird.animframe == 0)
+			{
+				hrt_DMA_Copy(3, b_run1Tiles, 0x06014000, 64, 0x80000000);
+			}
+			else if (bird.animframe == 1)
+			{
+				hrt_DMA_Copy(3, b_run2Tiles, 0x06014000, 64, 0x80000000);
+			}
+			else if (bird.animframe == 2)
+			{
+				hrt_DMA_Copy(3, b_run3Tiles, 0x06014000, 64, 0x80000000);
+			}
+			else if (bird.animframe == 3)
+			{
+				hrt_DMA_Copy(3, b_idleTiles,  0x06014000, 64, 0x80000000);
+			}
+		}
+}
+
 void animflight()
 {
 	switch (bird.flight)
@@ -139,22 +168,22 @@ void animbird()
 			}
 			if (bird.animframe == 0)
 			{
-				mmEffectCancel(audio.b_step);
+				mmEffectCancel(audio.ChirpyStep);
 				hrt_LoadOBJGFX((void*)b_run1Tiles, 64);
 			}
 			else if (bird.animframe == 1)
 			{
-				audio.b_step = mmEffectEx(&step);
+				audio.ChirpyStep = mmEffectEx(&step);
 				hrt_LoadOBJGFX((void*)b_run2Tiles, 64);
 			}
 			else if (bird.animframe == 2)
 			{
-				mmEffectCancel(audio.b_step2);
+				mmEffectCancel(audio.ChirpyStep2);
 				hrt_LoadOBJGFX((void*)b_run3Tiles, 64);
 			}
 			else if (bird.animframe == 3)
 			{
-				audio.b_step2 = mmEffectEx(&step2);
+				audio.ChirpyStep2 = mmEffectEx(&step2);
 				hrt_LoadOBJGFX((void*)b_idleTiles, 64);
 			}
 		}

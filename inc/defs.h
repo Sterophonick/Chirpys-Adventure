@@ -1,5 +1,96 @@
-void hrt_InitNoIntro();
 void physics(void);
+void Credits(void);
+void MainMenu(void);
+void SaveGames(void);
+void LoadGames(void);
+void Story();
+void worldmap();
+extern void MenuCursor();
+extern void AnimMenuCursor();
+void CheckSRAM();
+
+extern mm_sound_effect m_select;
+extern mm_sound_effect m_confirm;
+extern mm_sound_effect m_no;
+extern mm_sound_effect m_sndvoltst;
+extern mm_sound_effect s_pageflip;
+extern mm_sound_effect map_select;
+extern mm_sound_effect map_confirm;
+extern mm_sound_effect g_pause;
+
+extern unsigned short pausePal[16];
+extern unsigned short pauseTiles[160];
+extern unsigned short pauseMap[640];
+extern u16 worldmap1Tiles[352];
+extern unsigned short worldmap1Pal[16];
+extern unsigned short worldmap1Map[640];
+extern u16 worldmap2Tiles[592];
+extern unsigned short worldmap2Pal[16];
+extern unsigned short worldmap2Map[640];
+
+extern char gl_pause_r[];
+extern char gl_pause_b[];
+extern char gl_pause_q[];
+extern char gl_story_1_1[];
+extern char gl_story_1_2[];
+extern char gl_story_2_1[];
+extern char gl_story_2_2[];
+extern char gl_story_3_1[];
+extern char gl_story_4_1[];
+extern char gl_story_4_2[];
+extern char gl_story_4_3[];
+
+extern char gl_debug_erase[];
+extern char gl_debug_build[];
+extern char gl_debug_savenote_1[];
+extern char gl_debug_savenote_2[];
+extern char gl_debug_savenote_3[];
+extern char gl_debug_savenote_4[];
+extern char gl_debug_savenote_5[];
+extern char gl_debug_savenote_6[];
+extern char gl_debug_data_error[];
+extern char gl_debug_erase[];
+extern char gl_debug_restart[];
+extern char gl_debug_abort[];
+extern char gl_debug_erasing[];
+extern char gl_debug_all[];
+
+
+extern char gl_controls_a[];
+extern char gl_controls_b[];
+extern char gl_controls_dpad[];
+extern char gl_controls_start[];
+extern char gl_choice_y[];
+extern char gl_choice_n[];
+extern char gl_choice_a[];
+extern char gl_pause_warn[];
+extern char gl_continue_percent[];
+extern char *gl_credits[112];
+extern char gl_menu_cont_empt[];
+extern char gl_options_audio_0[];
+extern char gl_options_audio_1[];
+extern char gl_options_audio_2[];
+extern char gl_options_audio_3[];
+extern char gl_options_audio_4[];
+extern char gl_options_audio_5[];
+extern char gl_options_audio_6[];
+extern char gl_options_audio_7[];
+extern char gl_options_audio_8[];
+extern char gl_options_audio_9[];
+extern char gl_options_audio_A[];
+extern char gl_menu_press[];
+extern char gl_menu_new[];
+extern char gl_menu_cont[];
+extern char gl_menu_opt[];
+extern char gl_menu_exit[];
+extern char gl_menu_opt_music[];
+extern char gl_menu_opt_sound[];
+extern char gl_menu_opt_credits[];
+extern char gl_menu_opt_sndtst[];
+extern char gl_options_controls[];
+extern char gl_menu_f1[];
+extern char gl_menu_f2[];
+extern char gl_menu_f3[];
 
 typedef struct
 {
@@ -50,17 +141,21 @@ typedef struct
 
 typedef struct
 {
-	mm_sfxhand menusel;
-	mm_sfxhand menuconf;
-	mm_sfxhand pageflip;
-	mm_sfxhand b_jump;
-	mm_sfxhand b_step;
-	mm_sfxhand b_step2;
-	mm_sfxhand b_hurt;
-	mm_sfxhand b_ded;
-	mm_sfxhand b_shoot;
-	mm_sfxhand credits;
-	mm_sfxhand e_ded;
+	mm_sfxhand MenuSelect;
+	mm_sfxhand MenuConfirm;
+	mm_sfxhand PageFlip;
+	mm_sfxhand ChirpyJump;
+	mm_sfxhand ChirpyStep;
+	mm_sfxhand ChirpyStep2;
+	mm_sfxhand ChirpyHurt;
+	mm_sfxhand ChirpyDie;
+	mm_sfxhand ChirpyShoot;
+	mm_sfxhand EnemyDie;
+	mm_sfxhand MapSelect;
+	mm_sfxhand MapEnter;
+	mm_sfxhand GamePause;
+	mm_sfxhand MenuSFXVolumeChange;
+	mm_sfxhand MenuUnavailable;
 }snd;
 
 typedef struct
@@ -85,7 +180,8 @@ typedef struct
 	u8 llock;
 	u8 rlock;
 	u32 frames;
-	u16* genericptr;
+	u32* genericptr;
+	u8 currentfile;
 }rom;
 
 typedef struct
@@ -93,6 +189,12 @@ typedef struct
 	u8 arpos;
 	u8 arframe;
 	u8 selection;
+	u8 uplock;
+	u8 downlock;
+	u8 selectionlimit;
+	u8 menuid;
+	u8 temparpos;
+	u8 temparpos2;
 }gmenu;
 
 typedef struct
@@ -109,43 +211,22 @@ typedef struct
 
 typedef struct
 {
-	u8 world;
-	u8 stage;
-	u8 lives;
-	u8 health;
+	u8 Allocated;
+	u8 CompletedStages;
+	u8 StageOnMap;
+	s8 Lives;
+	u8 Health;
 }savefile;
 
 typedef struct
 {
-	savefile save1;
-	savefile save2;
-	savefile save3;
-	u16 RNGSeed;
+	s16 RNGSeed;
+	u8 MusicVolume;
+	u8 SoundVolume;
+	savefile Files[3];
 }sram;
-
-void MapLayerDrawStripH(int layerIdx, int srcY);
-void MapLayerDrawStripV(int layerIdx, int srcX);
 void detectcollision();
 void animbird();
-
-#define BG_SCRN_VRAM(n) ((u16*)(0x6000000 + ((n) << 11))) 
-#define fptochar(x) ((x) >> 11) 
-#define inttofp(x) ((x) << 8) 
-
-typedef struct _s16xy { s16 x, y; } s16xy;
-
-typedef struct _Vector2 { s32 x, y; } Vector2;
-
-typedef struct _MapLayer { u16 *map; Vector2 scroll; } MapLayer;
-
-typedef struct _GameMap
-{
-	s16xy dimensions;
-	const u16 *tileset; // Pointer to map file output from gfx2gba for the tileset bitmap 
-	u8 numLayers; // Number of layers actually in use for the current map. Max 4 since that's all the hardware BGs 
-	MapLayer layer[4];
-
-} GameMap;
 
 extern const u8 soundbank_bin_end[];
 extern const u8 soundbank_bin[];
@@ -232,8 +313,9 @@ const unsigned short m_musvolTiles[208];
 const unsigned short m_sfxvolTiles[176];
 const unsigned short m_optionsTiles[256];
 const unsigned short m_newgameTiles[256];
-const unsigned short m_continueTiles[256];
 const unsigned short m_continuePal[16];
+const unsigned short m_continueTiles[176];
+const unsigned short m_continueMap[640];
 const unsigned short m_exitTiles[128];
 const unsigned short m_arrow4Tiles[16];
 const unsigned short m_arrow4Pal[16];
@@ -244,8 +326,8 @@ const unsigned short m_startgameTiles[160];
 const unsigned short m_pressstartTiles[192];
 const unsigned short m_bg_Map[1024];
 const unsigned char m_bg_Tiles[864];
-const unsigned short m_title_Map[1024];
-const unsigned char m_title_Tiles[1600];
+const unsigned short m_titleMap[1024];
+const unsigned char m_titleTiles[800];
 const unsigned short m_bgPalette[16];
 
 const unsigned short disclaimerBitmap[2514];
