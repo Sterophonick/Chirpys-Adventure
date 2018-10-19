@@ -66,8 +66,7 @@ void CheckSRAM()
 		hrt_PrintOnTilemap(temp, 10, (char*)gl_debug_data_error);
 		hrt_Memcpy(SRAM, 0x02000100, 0xFFFF);	
 		game.frames = 0;
-			hrt_SaveByte(2, 8);
-			hrt_SaveByte(3, 8);
+		hrt_Memcpy(SRAM, 0x02000100, 0xFFFF); //clears SRAM
 		while(!(KEY_ANY_PRESSED))
 		{
 			hrt_VblankIntrWait();
@@ -89,6 +88,8 @@ void CheckSRAM()
 	}
 	if((keyDown(KEY_A))AND(keyDown(KEY_B)))
 	{
+		if(!((keyDown(KEY_A))AND(keyDown(KEY_B))))
+		{
 							hrt_DSPDisableForceBlank();
 		hrt_DSPEnableBG(0);
 		hrt_DSPEnableBG(1);
@@ -150,5 +151,6 @@ void CheckSRAM()
             } //waits until any key pressed
             hrt_ColdReset();//resets console
         }
+		}
 	}
 }

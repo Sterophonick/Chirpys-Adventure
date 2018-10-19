@@ -18,6 +18,7 @@ int main()
 {
 	hrt_EnableRTC();
 	hrt_Init();
+	game.debug = 1; //This should only be used for debugging purposes, as it slows the game down.
 	LoadGames();
 	CheckSRAM();
 	REG_BG2VOFS = 0;
@@ -128,8 +129,33 @@ void vblFunc(void)
 	g_pause.volume = sndvolumetable[SaveFiles.SoundVolume];
 	g_pause.panning = 128;
 	
+	b_die.id = SFX_B_DED;
+	b_die.rate = (int)(1.0f * (1 << 10));
+	b_die.handle = 8;
+	b_die.volume = sndvolumetable[SaveFiles.SoundVolume];
+	b_die.panning = 128;
+	
+	b_step.id = SFX_B_STEP;
+	b_step.rate = (int)(1.0f * (1 << 10));
+	b_step.handle = 8;
+	b_step.volume = sndvolumetable[SaveFiles.SoundVolume];
+	b_step.panning = 128;
+	
+	b_jump.id = SFX_B_JUMP;
+	b_jump.rate = (int)(1.0f * (1 << 10));
+	b_jump.handle = 8;
+	b_jump.volume = sndvolumetable[SaveFiles.SoundVolume];
+	b_jump.panning = 128;
+	
+	b_hurt.id = SFX_B_HURT;
+	b_hurt.rate = (int)(1.0f * (1 << 10));
+	b_hurt.handle = 8;
+	b_hurt.volume = sndvolumetable[SaveFiles.SoundVolume];
+	b_hurt.panning = 128;
+	
 	if((keyDown(KEY_A))AND(keyDown(KEY_B))AND(keyDown(KEY_SELECT))AND(keyDown(KEY_START)))
 	{
+		hrt_RegisterRamReset(hrt_ConfigRegisterRamReset(0,0,0,0,0,0,0,1));
 		hrt_SoftReset();
 	}
 }

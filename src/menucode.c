@@ -33,16 +33,16 @@ const mm_byte sndvolumetable[11]= {
 
 const mm_word musvolumetable[11]= {
     0,
-    100,
-    200,
+    75,
+    150,
+    225,
     300,
-    400,
-    500,
+    375,
+    450,
+    525,
     600,
-    700,
-    800,
-    900,
-    1024,
+    675,
+    768,
 };
 void musicvolume()
 {

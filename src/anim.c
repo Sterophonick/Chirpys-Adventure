@@ -8,6 +8,8 @@ extern snd audio;
 #define HEART2_OAM 416
 #define HEART3_OAM 480
 
+mm_sound_effect b_step;
+
 void animbirdmap()
 {
 		bird.animtimer++;
@@ -144,17 +146,10 @@ void animbird()
 		255,	// volume
 		128,	// panning
 	};
-	mm_sound_effect step2 = {
-		{ SFX_B_STEP },			// id
-		(int)(1.0f * (1 << 10)),	// rate
-		0,		// handle
-		255,	// volume
-		128,	// panning
-	};
 	hrt_SetOffset(OFF_OAMDATA, 0);
 	if (bird.animstate == 0)
 	{
-		hrt_LoadOBJGFX((void*)b_idleTiles, 64);
+		hrt_DMA_Copy(3, b_idleTiles,  0x06014000, 64, 0x80000000);
 	}
 	else if (bird.animstate == 1)
 	{
@@ -168,34 +163,93 @@ void animbird()
 			}
 			if (bird.animframe == 0)
 			{
-				mmEffectCancel(audio.ChirpyStep);
-				hrt_LoadOBJGFX((void*)b_run1Tiles, 64);
+				hrt_DMA_Copy(3, b_run1Tiles,  0x06014000, 64, 0x80000000);
 			}
 			else if (bird.animframe == 1)
 			{
-				audio.ChirpyStep = mmEffectEx(&step);
-				hrt_LoadOBJGFX((void*)b_run2Tiles, 64);
+				audio.ChirpyStep = mmEffectEx(&b_step);
+				hrt_DMA_Copy(3, b_run2Tiles,  0x06014000, 64, 0x80000000);
 			}
 			else if (bird.animframe == 2)
 			{
-				mmEffectCancel(audio.ChirpyStep2);
-				hrt_LoadOBJGFX((void*)b_run3Tiles, 64);
+				hrt_DMA_Copy(3, b_run3Tiles,  0x06014000, 64, 0x80000000);
 			}
 			else if (bird.animframe == 3)
 			{
-				audio.ChirpyStep2 = mmEffectEx(&step2);
-				hrt_LoadOBJGFX((void*)b_idleTiles, 64);
+				audio.ChirpyStep = mmEffectEx(&b_step);
+				hrt_DMA_Copy(3, b_idleTiles,  0x06014000, 64, 0x80000000);
 			}
 		}
 	}
 	else if (bird.animstate == 2) {
 		if (bird.yvel > 0)
 		{
-			hrt_LoadOBJGFX((void*)b_run1Tiles, 64);
+			hrt_DMA_Copy(3, b_run1Tiles, 0x06014000, 64, 0x80000000);
 		}
 		else
 		{
-			hrt_LoadOBJGFX((void*)b_fallTiles, 64);
+			hrt_DMA_Copy(3, b_fallTiles,  0x06014000, 64, 0x80000000);
 		}
 	}
+}
+
+void glideSprite(int spr, int x1, int y1, int x2, int y2, int frames)
+{
+    hrt_SetOBJXY(spr, x1, y1);
+    int i, deltax, deltay, numpixels;
+    int d, dinc1, dinc2;
+    int x, xinc1, xinc2;
+    int y, yinc1, yinc2;
+    //calculate deltaX and deltaY
+    deltax = abs(x2 - x1);
+    deltay = abs(y2 - y1);
+    //initialize
+    if (deltax >= deltay) {
+        //If x is independent variable
+        numpixels = deltax + 1;
+        d = (2 * deltay) - deltax;
+        dinc1 = deltay << 1;
+        dinc2 = (deltay - deltax) << 1;
+        xinc1 = 1;
+        xinc2 = 1;
+        yinc1 = 0;
+        yinc2 = 1;
+    }
+    else {
+        //if y is independent variable
+        numpixels = deltay + 1;
+        d = (2 * deltax) - deltay;
+        dinc1 = deltax << 1;
+        dinc2 = (deltax - deltay) << 1;
+        xinc1 = 0;
+        xinc2 = 1;
+        yinc1 = 1;
+        yinc2 = 1;
+    }
+    //move the right direction
+    if (x1 > x2) {
+        xinc1 = -xinc1;
+        xinc2 = -xinc2;
+    }
+    if (y1 > y2) {
+        yinc1 = -yinc1;
+        yinc2 = -yinc2;
+    }
+    x = x1;
+    y = y1;
+    //draw the pixels
+    for (i = 1; i < numpixels; i++) {
+        hrt_VblankIntrWait();
+        hrt_SetOBJXY(spr, x, y);
+        if (d < 0) {
+            d = d + dinc1;
+            x = x + xinc1;
+            y = y + yinc1;
+        }
+        else {
+            d = d + dinc2;
+            x = x + xinc2;
+            y = y + yinc2;
+        }
+    }
 }

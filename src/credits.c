@@ -19,14 +19,10 @@ void Credits()
 	hrt_PrintOnTilemap(6, 20, (char*)gl_credits[0]);
 	mmStart(MOD_CREDITS, MM_PLAY_LOOP);
 	register u8 temp;
-	for (scroll = 0; scroll < 860; scroll++)
+	for (scroll = 0; scroll < 512; scroll++)
 	{
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		REG_BG2VOFS = scroll % 512;
+		hrt_SleepF(5);
+		REG_BG2VOFS = scroll;
 		if(oldscroll/ 8 != scroll / 8)
 		{
 			oldscroll = scroll;
@@ -36,14 +32,10 @@ void Credits()
 			hrt_PrintOnTilemap(0, string-40, "                              ");
 		}
 	}
-	for (scroll = 0; scroll < 8; scroll++)
+	for (scroll = 0; scroll < 312; scroll++)
 	{
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		hrt_VblankIntrWait();
-		REG_BG2VOFS = scroll+360 % 512;
+		hrt_SleepF(5);
+		REG_BG2VOFS = scroll;
 		if(oldscroll/ 8 != scroll / 8)
 		{
 			oldscroll = scroll;

@@ -4,10 +4,15 @@ void MainMenu(void);
 void SaveGames(void);
 void LoadGames(void);
 void Story();
+void inithud();
+void SetPaletteOfTiledText(u8 pal);
 void worldmap();
 extern void MenuCursor();
 extern void AnimMenuCursor();
 void CheckSRAM();
+void die();
+void glideSprite(int spr, int x1, int y1, int x2, int y2, int frames);
+
 
 extern mm_sound_effect m_select;
 extern mm_sound_effect m_confirm;
@@ -17,6 +22,10 @@ extern mm_sound_effect s_pageflip;
 extern mm_sound_effect map_select;
 extern mm_sound_effect map_confirm;
 extern mm_sound_effect g_pause;
+extern mm_sound_effect b_die;
+extern mm_sound_effect b_step;
+extern mm_sound_effect b_jump;
+extern mm_sound_effect b_hurt;
 
 extern unsigned short pausePal[16];
 extern unsigned short pauseTiles[160];
@@ -55,6 +64,9 @@ extern char gl_debug_abort[];
 extern char gl_debug_erasing[];
 extern char gl_debug_all[];
 
+extern char gl_debug_px[];
+extern char gl_debug_py[];
+extern char gl_debug_sx[];
 
 extern char gl_controls_a[];
 extern char gl_controls_b[];
@@ -94,8 +106,8 @@ extern char gl_menu_f3[];
 
 typedef struct
 {
-	u32 xpos;
-	u32 ypos;
+	s32 xpos;
+	s32 ypos;
 	s16 yvel;
 	s16 xvel;
 	u8 health;
@@ -112,23 +124,24 @@ typedef struct
 	u8 tiley;
 	u8 ycoll;
 	u8 animtimer;
-	u8 firetimer;
-	u8 firex;
-	u8 firey;
-	u8 firecol_l;
-	u8 firecol_r;
 	u32 screenx;
 	u32 screeny;
 }player;
 
 typedef struct
 {
-	s32 xscroll;
-	s32 yscroll;
-	s32 oldY;
-	s32 newY;
-	s32 oldX;
-	s32 newX;
+	s16 X, Y;
+	u8 Active;
+}fireball;
+
+typedef struct
+{
+	u32 xscroll;
+	u32 yscroll;
+	u32 oldY;
+	u32 newY;
+	u32 oldX;
+	u32 newX;
 	u16* tiledata;
 	u16* mapData;
 	u16* palData;
@@ -146,7 +159,6 @@ typedef struct
 	mm_sfxhand PageFlip;
 	mm_sfxhand ChirpyJump;
 	mm_sfxhand ChirpyStep;
-	mm_sfxhand ChirpyStep2;
 	mm_sfxhand ChirpyHurt;
 	mm_sfxhand ChirpyDie;
 	mm_sfxhand ChirpyShoot;
@@ -182,6 +194,7 @@ typedef struct
 	u32 frames;
 	u32* genericptr;
 	u8 currentfile;
+	u8 debug;
 }rom;
 
 typedef struct
@@ -199,14 +212,10 @@ typedef struct
 
 typedef struct
 {
-	u8 topl;
-	u8 bottoml;
-	u8 leftu;
-	u8 rightu;
-	u8 topr;
-	u8 bottomr;
-	u8 leftd;
-	u8 rightd;
+	u8 left;
+	u8 right;
+	u8 top;
+	u8 bottom;
 }col;
 
 typedef struct
@@ -225,8 +234,9 @@ typedef struct
 	u8 SoundVolume;
 	savefile Files[3];
 }sram;
-void detectcollision();
+void detectcollisionright();
 void animbird();
+void InitializeMainGame();
 
 extern const u8 soundbank_bin_end[];
 extern const u8 soundbank_bin[];
@@ -235,12 +245,13 @@ extern const u32 soundbank_bin_size;
 const unsigned short level1Tiles[816];
 const unsigned short level1MetaTiles[84];
 const unsigned short level1MetaMap[3000];
+const unsigned short level2MetaMap[3000];
 const unsigned short level1Pal[16];
 
-const unsigned short level2Tiles[736];
-const unsigned short level2MetaTiles[80];
-const unsigned short level2MetaMap[3000];
-const unsigned short level2Pal[16];
+//const unsigned short level2Tiles[736];
+//const unsigned short level2MetaTiles[80];
+//const unsigned short level2MetaMap[3000];
+//const unsigned short level2Pal[16];
 
 const unsigned short f_0Tiles[64];
 const unsigned short f_0Pal[16];
@@ -271,6 +282,7 @@ const unsigned short f_24Tiles[64];
 const unsigned short f_25Tiles[64];
 const unsigned short f_fullTiles[64];
 
+
 const unsigned short h_halfTiles[64];
 const unsigned short h_fullTiles[64];
 const unsigned short h_emptyTiles[64];
@@ -288,7 +300,7 @@ const unsigned short b_run1Tiles[64];
 const unsigned short b_flapTiles[64];
 const unsigned short b_fall_fTiles[64];
 const unsigned short b_fallTiles[64];
-const unsigned short b_dieTiles[64];
+extern const unsigned short b_dieTiles[64];
 const unsigned short b_fireTiles[16];
 
 const unsigned short e_cralen1Tiles[64];
@@ -300,11 +312,6 @@ const unsigned short h_xTiles[16];
 const unsigned short h_stageTiles[128];
 const unsigned short h_flightTiles[512];
 
-extern int hrt_offsetOAMData;
-extern int hrt_offsetOAMPal;
-extern int hrt_offsetBGMap;
-extern int hrt_offsetBGTile;
-extern int hrt_offsetBGPal;
 void animflight();
 
 const unsigned short m_yearTiles[576];
@@ -325,17 +332,15 @@ const unsigned short m_arrow1Tiles[16];
 const unsigned short m_startgameTiles[160];
 const unsigned short m_pressstartTiles[192];
 const unsigned short m_bg_Map[1024];
-const unsigned char m_bg_Tiles[864];
+const unsigned char m_bg_Tiles[896];
 const unsigned short m_titleMap[1024];
-const unsigned char m_titleTiles[800];
+const unsigned char m_titleTiles[1600];
 const unsigned short m_bgPalette[16];
 
 const unsigned short disclaimerBitmap[2514];
 const unsigned short disclaimerPal[16];
 const unsigned short creditsBitmap[2466];
 const unsigned short creditsPal[16];
-
-const unsigned char l1_1colmap[40][300];
 
 const unsigned short story1Bitmap[4632];
 const unsigned short story2Bitmap[4796];

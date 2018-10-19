@@ -60,10 +60,12 @@ void animcursormap()
 
 void mappause()
 {
+		u8 entry;
 		hrt_PrintOnTilemap(12, 8, gl_pause_r);
 		hrt_PrintOnTilemap(13, 9, gl_pause_q);
 		menu.selectionlimit = 1;
 		menu.arpos = 0;
+		hrt_SetFXLevel(8);
 		hrt_SetOBJXY(0, 240, 160);
 	while(1)
 	{
@@ -86,10 +88,15 @@ void mappause()
 	hrt_DSPDisableBG(1);
 	hrt_ClearTiledText();
 	hrt_SetOBJXY(0, xchange1[mappos], ychange1[mappos]);
+	hrt_SetFXLevel(0);
 }
 
 void presses1()
 {
+		if(keyDown(KEY_A))
+		{
+			InitializeMainGame();
+		}
 	if(mappos > 3)
 	{
 		mappos = 3;
@@ -208,7 +215,7 @@ void worldmap()
 		hrt_DMA_Copy(3, worldmap1Map, (u32*)0x6002000, 640,  0x80000000);
 		hrt_LoadBGPal((void*)worldmap1Pal, 16);
 	}
-	if((SaveFiles.Files[game.currentfile].StageOnMap > 3)AND(SaveFiles.Files{game.currentfile].StageOnMap < 8))
+	if((SaveFiles.Files[game.currentfile].StageOnMap > 3)AND(SaveFiles.Files[game.currentfile].StageOnMap < 8))
 	{
 		hrt_SetOffset(OFF_BGPAL, 16);
 		hrt_DMA_Copy(3, worldmap2Tiles, (u32*)0x600C000, 448, 0x80000000);
@@ -236,6 +243,7 @@ void worldmap()
         REG_BLDY = 15-game.i;
         hrt_VblankIntrWait();
     }
+	REG_BLDCNT = 0x1FC4;
 	while(1)
 	{
 		hrt_VblankIntrWait();

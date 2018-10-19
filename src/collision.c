@@ -3,14 +3,36 @@
 extern col collision;
 extern map demolevel;
 extern player bird;
+extern rom game;
 
-void detectcollision() {
-	collision.topl = l1_1colmap[bird.tiley-1][bird.tilex];
-	collision.topr = l1_1colmap[bird.tiley-1][bird.tilex+1];
-	collision.rightu = l1_1colmap[bird.tiley][bird.tilex+2];
-	collision.rightd = l1_1colmap[bird.tiley+1][bird.tilex + 2];
-	collision.bottomr = l1_1colmap[bird.tiley+2][bird.tilex+1];
-	collision.bottoml = l1_1colmap[bird.tiley+2][bird.tilex];
-	collision.leftu = l1_1colmap[bird.tiley][bird.tilex-1];
-	collision.leftd = l1_1colmap[bird.tiley+1][bird.tilex-1];
+u8 spiketiles[64] = {
+	//level1
+	9,13,14,18,
+	
+	//level2
+	14,9,11,13,
+};
+
+void detectcollisionright() {
+		if (level1MetaMap[bird.tiley*150+bird.tilex]==0x0001)
+		{
+            demolevel.loadxlock = 0; 
+            demolevel.xscroll-=2; 
+			bird.xpos-=bird.xvel;
+			bird.tilex--;
+			bird.xvel = 0;
+            demolevel.newX = demolevel.xscroll; 
+		}	else {
+			asm("nop");
+		}
+		if (level1MetaMap[bird.tilex+1]==0x0001)
+		{
+            demolevel.loadxlock = 0; 
+            demolevel.xscroll-=2; 
+			bird.xpos-=2;
+			bird.tilex--;
+            demolevel.newX = demolevel.xscroll; 
+		}	else {
+			asm("nop");
+		}
 }

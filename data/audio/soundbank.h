@@ -16,6 +16,7 @@
 #define SFX_B_SHOOT	57
 #define SFX_B_STEP	58
 #define SFX_M_SELECT	59
+#define SFX______FEST_N	79
 #define MOD_WORLD1	1
 #define MOD_WORLD2	2
 #define MOD_WORLD3	3

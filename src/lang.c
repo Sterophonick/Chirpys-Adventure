@@ -12,7 +12,7 @@ const char gl_pause_warn[]="Overwrite the file?";
 const char gl_game_saving[]="Saving...";
 const char gl_game_saved[]="Game Saved.";
 const char gl_generic_press_a[]="Press A to continue.";
-const char gl_game_stage_no[]="Stage %d - %d";
+const char gl_game_stage_no[]="Stage";
 const char gl_complete_a[]="A - Next level";
 const char gl_complete_b[]="B - Back to map";
 const char gl_options_sndtst[]="Sound Test";
@@ -46,16 +46,20 @@ const char gl_debug_all[]="All data will be erased.";
 
 
 const char gl_debug_erase[]="Erase save data?";
-const char gl_debug_build[]="Build date: ";
+const char gl_debug_build[]="Build date: 164210182018";
+
 const char gl_options_soundtest_music[]="Music ID";
 const char gl_options_soundtest_sound[]="Sound ID";
+
 const char gl_debug_saveversion[]="SRAM_V112";
+
 const char gl_debug_savenote_1[]="The game has found that there";
 const char gl_debug_savenote_2[]="is no save data.";
 const char gl_debug_savenote_3[]="If this is your first time";
 const char gl_debug_savenote_4[]="playing then relax!";
 const char gl_debug_savenote_5[]="Chirpy's Adventure requires";
 const char gl_debug_savenote_6[]="8kb of SRAM.";
+
 const char gl_debug_data_error[]="BACKUP MEMORY ERROR!";
 
 const char gl_story_1_1[]="Chirpy just got home from a";
@@ -91,6 +95,10 @@ const char gl_menu_opt_sndtst[]="Sound Test";
 const char gl_game_hud_flight[]="Flight";
 const char gl_game_hud_x[]="x";
 
+const char gl_debug_px[]="PLAYR_X:";
+const char gl_debug_py[]="PLAYR_Y:";
+const char gl_debug_sx[]="SCREEN_X:";
+
 
 const char *gl_credits[112] = {
 	"Chirpy's Adventure",
@@ -124,21 +132,14 @@ const char *gl_credits[112] = {
 	"",
 	"Audio",
 	"------------------------------",
-	"ModArchive",
-	"(Global Motion vol.1)",
-	"(dusty nintendo.)",
-	"",
-	"Yacht Club Games",
-	"(World 1 - Strike the Earth!)",
-	"",
-	"FearOfDark",
-	"World 4 - Plagiarism",
-	"",
-	"Renegade Kid",
-	"(World 3)",
-	"",
+	"Purple Motion",
 	"DuckyMaster",
 	"Terry Cavanagh",
+	"FearOfDark",
+	"Doh",
+	"Renegade Kid",
+	"Nintendo",
+	"Capcom",
 	"",
 	"------------------------------",
 	"HeartLib API created",
@@ -158,7 +159,7 @@ const char *gl_credits[112] = {
 	"Stevendog98",
 	"Insequearaux",
 	"Free Software Foundation",
-	"Tubooboo (rip ngine.de)",
+	"Tubooboo  (RIP ngine.de)",
 	"Microsoft",
 	"EZ-Flash",
 	"Jason Wilkins",
