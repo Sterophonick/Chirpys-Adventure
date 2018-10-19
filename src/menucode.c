@@ -16,6 +16,8 @@ mm_sound_effect m_confirm;
 mm_sound_effect m_no;
 mm_sound_effect m_sndvoltst;
 mm_sound_effect g_pause;
+mm_sound_effect m_save;
+mm_sound_effect m_load;
 
 const mm_byte sndvolumetable[11]= {
     0,
@@ -83,7 +85,6 @@ void musicvolume()
         if(!(SaveFiles.MusicVolume == 0)) {
             SaveFiles.MusicVolume--;
         }
-		SaveGames();
         while(keyDown(KEY_LEFT)) {
             hrt_VblankIntrWait();
             AnimMenuCursor();
@@ -93,10 +94,10 @@ void musicvolume()
         if(!(SaveFiles.MusicVolume == 10)) {
             SaveFiles.MusicVolume++;
         }
-		SaveGames();
+        SaveGames();
         while(keyDown(KEY_RIGHT)) {
             hrt_VblankIntrWait();
-			AnimMenuCursor();
+            AnimMenuCursor();
         }
     }
     mmSetModuleVolume(musvolumetable[SaveFiles.MusicVolume]);
@@ -140,9 +141,9 @@ void soundvolume()
     if(keyDown(KEY_LEFT)) {
         if(!(SaveFiles.SoundVolume == 0)) {
             SaveFiles.SoundVolume--;
-			hrt_VblankIntrWait();
+            hrt_VblankIntrWait();
             audio.MenuSFXVolumeChange = mmEffectEx(&m_sndvoltst);
-			SaveGames();
+            SaveGames();
         }
         while(keyDown(KEY_LEFT)) {
             hrt_VblankIntrWait();
@@ -152,9 +153,9 @@ void soundvolume()
     if(keyDown(KEY_RIGHT)) {
         if(!(SaveFiles.SoundVolume == 10)) {
             SaveFiles.SoundVolume++;
-			hrt_VblankIntrWait();
+            hrt_VblankIntrWait();
             audio.MenuSFXVolumeChange = mmEffectEx(&m_sndvoltst);
-			SaveGames();
+            SaveGames();
         }
         while(keyDown(KEY_RIGHT)) {
             hrt_VblankIntrWait();
@@ -272,7 +273,7 @@ void MainMenu()
     for(game.i = 0; game.i < 1024; game.i++) {
         VRAM[0x2000+game.i] |= BIT12;
     }
-	    for (game.i = 0; game.i < 16; game.i++) {
+    for (game.i = 0; game.i < 16; game.i++) {
         REG_BLDY = 15-game.i;
         hrt_VblankIntrWait();
     }
@@ -316,7 +317,7 @@ void MainMenu()
                   0,                             //BG 3 Target 2
                   0,                             //OBJ Target 2
                   1);                           //Backdrop Target 2
-				 REG_BG0VOFS = 128;
+    REG_BG0VOFS = 128;
     for (game.i = 128; game.i < 257; game.i += 2) {
         hrt_VblankIntrWait();
         REG_BG0VOFS = game.i;
@@ -504,12 +505,15 @@ void MainMenu()
                                         }
                                         audio.MenuConfirm = mmEffectEx(&m_confirm);
                                         if(menu.arpos == 0) {
-											SaveFiles.Files[menu.temparpos2].Allocated = 1;
+                                            SaveFiles.Files[menu.temparpos2].Allocated = 1;
                                             SaveFiles.Files[menu.temparpos2].CompletedStages = 0;
                                             SaveFiles.Files[menu.temparpos2].StageOnMap = 0;
                                             SaveFiles.Files[menu.temparpos2].Lives = 5;
                                             SaveFiles.Files[menu.temparpos2].Health = 6;
-											Story();
+                                            SaveGames();
+                                            mmEffectCancel(audio.MenuConfirm);
+                                            audio.GameSave = mmEffectEx(&m_save);
+                                            Story();
                                         }
                                         hrt_ClearTiledText();
                                         hrt_PrintOnTilemap(2, 3, gl_menu_f1);
@@ -545,17 +549,76 @@ void MainMenu()
                                         }
                                     }
                                     else {
-											SaveFiles.Files[menu.temparpos2].Allocated = 1;
-                                            SaveFiles.Files[menu.temparpos2].CompletedStages = 0;
-                                            SaveFiles.Files[menu.temparpos2].StageOnMap = 0;
-                                            SaveFiles.Files[menu.temparpos2].Lives = 5;
-                                            SaveFiles.Files[menu.temparpos2].Health = 6;
-											Story();
+                                        mmEffectCancel(audio.MenuConfirm);
+                                        SaveFiles.Files[menu.temparpos2].Allocated = 1;
+                                        SaveFiles.Files[menu.temparpos2].CompletedStages = 0;
+                                        SaveFiles.Files[menu.temparpos2].StageOnMap = 0;
+                                        SaveFiles.Files[menu.temparpos2].Lives = 5;
+                                        SaveFiles.Files[menu.temparpos2].Health = 6;
+                                        SaveGames();
+                                        audio.GameSave = mmEffectEx(&m_save);
+                                        Story();
                                     }
-                                }else{
-											game.currentfile = menu.temparpos2;
-											worldmap();
-										}
+                                }
+                                else {
+                                    if(SaveFiles.Files[menu.arpos].Allocated == 0) {
+                                        audio.MenuConfirm = mmEffectEx(&m_confirm);
+                                        menu.temparpos2 = menu.arpos;
+                                        hrt_ClearTiledText();
+                                        hrt_SetOBJXY(9, 240, 160);
+                                        hrt_PrintOnTilemap(hrt_Div(30-strlen((char*)gl_continue_fileempty), 2), 9, gl_continue_fileempty);
+                                        while(keyDown(KEY_A)) {
+                                            AnimMenuCursor();
+                                            hrt_VblankIntrWait();
+                                        }
+                                        while(!(keyDown(KEY_A))) {
+                                            AnimMenuCursor();
+                                            hrt_VblankIntrWait();
+                                        }
+                                        hrt_ClearTiledText();
+                                        hrt_PrintOnTilemap(2, 3, gl_menu_f1);
+                                        hrt_PrintOnTilemap(2, 10, gl_menu_f2);
+                                        hrt_PrintOnTilemap(2, 17, gl_menu_f3);
+                                        u8 temp;
+                                        if(SaveFiles.Files[0].Allocated == 0) {
+                                            hrt_PrintOnTilemap(10, 3, gl_menu_cont_empt);
+                                        }
+                                        else {
+                                            temp = percentages[SaveFiles.Files[0].CompletedStages];
+                                            hrt_PrintOnTilemap(10, 3, "%d%s", temp, gl_continue_percent);
+                                        }
+                                        if(SaveFiles.Files[1].Allocated == 0) {
+                                            hrt_PrintOnTilemap(10, 10, gl_menu_cont_empt);
+                                        }
+                                        else {
+                                            temp = percentages[SaveFiles.Files[1].CompletedStages];
+                                            hrt_PrintOnTilemap(10, 10, "%d%s", temp, gl_continue_percent);
+                                        }
+                                        if(SaveFiles.Files[2].Allocated == 0) {
+                                            hrt_PrintOnTilemap(10, 17, gl_menu_cont_empt);
+                                        }
+                                        else {
+                                            temp = percentages[SaveFiles.Files[2].CompletedStages];
+                                            hrt_PrintOnTilemap(10, 17, "%d%s", temp, gl_continue_percent);
+                                        }
+                                        menu.arpos = menu.temparpos;
+                                        hrt_SetOBJXY(9, 8, 24);
+                                        while(keyDown(KEY_A)) {
+                                            hrt_VblankIntrWait();
+                                            AnimMenuCursor();
+                                        }
+                                    }
+                                    else {
+                                        mmEffectCancel(audio.MenuConfirm);
+                                        audio.GameLoad = mmEffectEx(&m_load);
+                                        game.currentfile = menu.temparpos2;
+                                        for (game.i = 0; game.i < 16; game.i++) {
+                                            REG_BLDY = game.i;
+                                            hrt_VblankIntrWait();
+                                        }
+                                        worldmap();
+                                    }
+                                }
                             }
                         }
                         for (game.i = 0; game.i < 16; game.i++) {
@@ -643,7 +706,7 @@ void MainMenu()
                     while(!((keyDown(KEY_A))AND(menu.arpos == 4))) {
                         hrt_VblankIntrWait();
                         AnimMenuCursor();
-						MenuCursor();
+                        MenuCursor();
                         hrt_SetOBJXY(9, 0, (menu.arpos * 8) + 56);
                         if(menu.arpos == 0) {
                             musicvolume();

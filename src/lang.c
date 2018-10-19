@@ -44,6 +44,7 @@ const char gl_debug_abort[]="The process was aborted.";
 const char gl_debug_erasing[]="Erasing...";
 const char gl_debug_all[]="All data will be erased.";
 
+const char gl_continue_fileempty[]="File is Empty.";
 
 const char gl_debug_erase[]="Erase save data?";
 const char gl_debug_build[]="Build date: 164210182018";

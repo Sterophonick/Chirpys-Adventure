@@ -26,6 +26,8 @@ extern mm_sound_effect b_die;
 extern mm_sound_effect b_step;
 extern mm_sound_effect b_jump;
 extern mm_sound_effect b_hurt;
+extern mm_sound_effect m_save;
+extern mm_sound_effect m_load;
 
 extern unsigned short pausePal[16];
 extern unsigned short pauseTiles[160];
@@ -63,6 +65,8 @@ extern char gl_debug_restart[];
 extern char gl_debug_abort[];
 extern char gl_debug_erasing[];
 extern char gl_debug_all[];
+
+extern char gl_continue_fileempty[];
 
 extern char gl_debug_px[];
 extern char gl_debug_py[];
@@ -104,136 +108,128 @@ extern char gl_menu_f1[];
 extern char gl_menu_f2[];
 extern char gl_menu_f3[];
 
-typedef struct
-{
-	s32 xpos;
-	s32 ypos;
-	s16 yvel;
-	s16 xvel;
-	u8 health;
-	u8 lives;
-	u8 animframe;
-	u8 animstate;
-	u8 flight;
-	u8 continues;
-	u8 jumpi;
-	u8 flightlock;
-	u8 oldx;
-	u8 oldy;
-	u8 tilex;
-	u8 tiley;
-	u8 ycoll;
-	u8 animtimer;
-	u32 screenx;
-	u32 screeny;
-}player;
+typedef struct {
+    s32 xpos;
+    s32 ypos;
+    s16 yvel;
+    s16 xvel;
+    u8 health;
+    u8 lives;
+    u8 animframe;
+    u8 animstate;
+    u8 flight;
+    u8 continues;
+    u8 jumpi;
+    u8 flightlock;
+    u8 oldx;
+    u8 oldy;
+    u8 tilex;
+    u8 tiley;
+    u8 ycoll;
+    u8 animtimer;
+    u32 screenx;
+    u32 screeny;
+} player;
 
-typedef struct
-{
-	s16 X, Y;
-	u8 Active;
-}fireball;
+typedef struct {
+    s16 X, Y;
+    u8 Active;
+} fireball;
 
-typedef struct
-{
-	u32 xscroll;
-	u32 yscroll;
-	u32 oldY;
-	u32 newY;
-	u32 oldX;
-	u32 newX;
-	u16* tiledata;
-	u16* mapData;
-	u16* palData;
-	u16 tileX;
-	u16 tileY;
-	u8 loadxlock;
-	u8 loadylock;
-	u8* colmap;
-}map;
+typedef struct {
+    u32 xscroll;
+    u32 yscroll;
+    u32 oldY;
+    u32 newY;
+    u32 oldX;
+    u32 newX;
+    u16* tiledata;
+    u16* mapData;
+    u16* palData;
+    u16 tileX;
+    u16 tileY;
+    u8 loadxlock;
+    u8 loadylock;
+    u8* colmap;
+} map;
 
-typedef struct
-{
-	mm_sfxhand MenuSelect;
-	mm_sfxhand MenuConfirm;
-	mm_sfxhand PageFlip;
-	mm_sfxhand ChirpyJump;
-	mm_sfxhand ChirpyStep;
-	mm_sfxhand ChirpyHurt;
-	mm_sfxhand ChirpyDie;
-	mm_sfxhand ChirpyShoot;
-	mm_sfxhand EnemyDie;
-	mm_sfxhand MapSelect;
-	mm_sfxhand MapEnter;
-	mm_sfxhand GamePause;
-	mm_sfxhand MenuSFXVolumeChange;
-	mm_sfxhand MenuUnavailable;
-}snd;
+typedef struct {
+    mm_sfxhand MenuSelect;
+    mm_sfxhand MenuConfirm;
+    mm_sfxhand PageFlip;
+    mm_sfxhand ChirpyJump;
+    mm_sfxhand ChirpyStep;
+    mm_sfxhand ChirpyHurt;
+    mm_sfxhand ChirpyDie;
+    mm_sfxhand ChirpyShoot;
+    mm_sfxhand EnemyDie;
+    mm_sfxhand MapSelect;
+    mm_sfxhand MapEnter;
+    mm_sfxhand GamePause;
+    mm_sfxhand MenuSFXVolumeChange;
+    mm_sfxhand MenuUnavailable;
+    mm_sfxhand GameSave;
+    mm_sfxhand GameLoad;
+} snd;
 
-typedef struct
-{
-	u8 type;
-	u8 health;
-	u8 xpos;
-	u8 ypos;
-}enemy;
+typedef struct {
+    u8 type;
+    u8 health;
+    u8 xpos;
+    u8 ypos;
+} enemy;
 
-typedef struct
-{
-	u8 level;
-	u8 world;
-	u16 rngvalue;
-	u8 selection;
-	u32 i;
-	u32 i2;
-	u8 alock;
-	u8 block;
-	u8 startlock;
-	u8 llock;
-	u8 rlock;
-	u32 frames;
-	u32* genericptr;
-	u8 currentfile;
-	u8 debug;
-}rom;
+typedef struct {
+    u8 level;
+    u8 world;
+    u16 rngvalue;
+    u8 selection;
+    u32 i;
+    u32 i2;
+    u8 alock;
+    u8 block;
+    u8 startlock;
+    u8 llock;
+    u8 rlock;
+    u32 frames;
+    u32* genericptr;
+    u8 currentfile;
+    u8 debug;
+} rom;
 
-typedef struct
-{
-	u8 arpos;
-	u8 arframe;
-	u8 selection;
-	u8 uplock;
-	u8 downlock;
-	u8 selectionlimit;
-	u8 menuid;
-	u8 temparpos;
-	u8 temparpos2;
-}gmenu;
+typedef struct {
+    u8 arpos;
+    u8 arframe;
+    u8 selection;
+    u8 uplock;
+    u8 downlock;
+    u8 selectionlimit;
+    u8 menuid;
+    u8 temparpos;
+    u8 temparpos2;
+} gmenu;
 
-typedef struct
-{
-	u8 left;
-	u8 right;
-	u8 top;
-	u8 bottom;
-}col;
+typedef struct {
+    u8 left;
+    u8 right;
+    u8 top;
+    u8 bottom;
+} col;
 
-typedef struct
-{
-	u8 Allocated;
-	u8 CompletedStages;
-	u8 StageOnMap;
-	s8 Lives;
-	u8 Health;
-}savefile;
+typedef struct {
+    u8 Allocated;
+    u8 CompletedStages;
+    u8 StageOnMap;
+    s8 Lives;
+    u8 Health;
+} savefile;
 
-typedef struct
-{
-	s16 RNGSeed;
-	u8 MusicVolume;
-	u8 SoundVolume;
-	savefile Files[3];
-}sram;
+typedef struct {
+    s16 RNGSeed;
+    u8 MusicVolume;
+    u8 SoundVolume;
+    savefile Files[3];
+} sram;
 void detectcollisionright();
 void animbird();
 void InitializeMainGame();

@@ -16,7 +16,6 @@
 #define SFX_B_SHOOT	57
 #define SFX_B_STEP	58
 #define SFX_M_SELECT	59
-#define SFX______FEST_N	79
 #define MOD_WORLD1	1
 #define MOD_WORLD2	2
 #define MOD_WORLD3	3
@@ -26,6 +25,8 @@
 #define MOD_CREDITS	7
 #define MOD_MAP	8
 #define MOD_PAPER	9
+#define SFX_M_SAVE	284
+#define SFX_M_LOAD	285
 #define MSL_NSONGS	10
-#define MSL_NSAMPS	284
-#define MSL_BANKSIZE	294
+#define MSL_NSAMPS	286
+#define MSL_BANKSIZE	296
