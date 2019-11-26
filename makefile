@@ -1,5 +1,5 @@
 HEADERS = include/main.h
-OBJECTS = build/main.o build/soundbank.out build/collisions.o build/debug.o build/enemies.o build/game.o build/lang.o build/menu.o build/scroll.o build/sram.o build/worldmap.o
+OBJECTS = build/main.o build/soundbank.out build/collisions.o build/debug.o build/enemies.o build/game.o build/lang.o build/menu.o build/scroll.o build/sram.o build/worldmap.o build/menucode.o
 SOURCES = src/main.c
 ELFS = build/main.elf
 ASMS = src/soundbank.s
