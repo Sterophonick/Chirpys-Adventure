@@ -12,3 +12,5 @@ typedef struct {
     u8 SoundVolume;
     savefile Files[3];
 } sram;
+
+extern sram saves;

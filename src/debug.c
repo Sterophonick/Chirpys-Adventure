@@ -8,4 +8,12 @@ void gCheckSRAM()
 	
 }
 
-void 
+void gSRAMEmpty()
+{
+	
+}
+
+void gSRAMCorrupt()
+{
+	
+}
