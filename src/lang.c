@@ -160,7 +160,7 @@ const char *gl_credits[112] = {
 	"Stevendog98",
 	"Insequearaux",
 	"Free Software Foundation",
-	"Tubooboo  (RIP ngine.de)",
+	"Tubooboo  (WOO HAM v3.0!!)",
 	"Microsoft",
 	"EZ-Flash",
 	"Jason Wilkins",

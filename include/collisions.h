@@ -1,0 +1,6 @@
+enum World1BadTiles {
+	W1_SPIKE_UP = 8,
+	W1_SPIKE_LEFT = 9,
+	W1_SPIKE_RIGHT = 10,
+	W1_SPIKE_DOWN = 11,
+};
