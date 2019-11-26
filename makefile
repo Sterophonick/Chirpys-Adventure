@@ -22,4 +22,4 @@ chirpy.gba: $(ELFS)
 clean:
 	-rm -f build/*.o
 	-rm -f build/main.elf
-	-rm -f bluebird.gba
+	-rm -f chirpy.gba
