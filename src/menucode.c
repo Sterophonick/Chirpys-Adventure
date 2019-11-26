@@ -9,7 +9,7 @@ u8 g_MenuPos = 0;
 
 void g_InitMainMenu()
 {
-	mmStart(MOD_WORLD3, MM_PLAY_LOOP); //Start playing the menu theme
+	mmStart(MOD_BOSS, MM_PLAY_LOOP); //Start playing the menu theme
 	//hrt_DMA_Copy(3, m_bg_Tiles, (u32*)0x600C000, 448, 0x80000000);
     //hrt_DMA_Copy(3, m_bg_Map, (u32*)0x6002000, 1024, 0x80000000);
     //hrt_DMA_Copy(3, m_titleTiles, (u32*)0x6008000, 800, 0x80000000);
