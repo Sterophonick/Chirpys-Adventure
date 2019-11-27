@@ -16,9 +16,10 @@ int main(void)
 	hrt_FXSetBlendMode(FX_MODE_BRIGHTEN);
 	mmInitDefault((mm_addr)soundbank_bin, 20);
 	mmSetVBlankHandler(VBLFunc);
-	hrt_SetFXLevel(16);
+	hrt_SetFXLevel(15);
 	hrt_FXEnableBG(0,1);
 	hrt_FXEnableBG(0,2);
+	hrt_SetKeyStructPointer(keypad);
 	g_InitMainMenu();
 	return 0;
 }

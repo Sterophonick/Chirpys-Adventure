@@ -6,7 +6,7 @@ ASMS = src/soundbank.s
 CFLAGS = -DHRT_WITH_LIBHEART -Wall -Ofast -march=armv4t -Wno-switch -Wno-multichar -ffast-math -mlong-calls -mcpu=arm7tdmi -mtune=arm7tdmi -marm -faggressive-loop-optimizations -fverbose-asm -Iinclude 
 ARCH = -mthumb -mthumb-interwork
 SPECS = -specs=gba.specs
-PREFIX = C:\devkitPro\devkitARM\bin\arm-none-eabi-
+PREFIX = arm-none-eabi-
 
 default: chirpy.gba
 

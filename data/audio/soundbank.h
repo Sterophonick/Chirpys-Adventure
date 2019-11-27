@@ -23,9 +23,9 @@
 #define MOD_STORY	6
 #define MOD_CREDITS	7
 #define MOD_MAP	8
-#define MOD_PAPER	9
-#define SFX_M_SAVE	239
-#define SFX_M_LOAD	240
+#define SFX_M_SAVE	189
+#define SFX_M_LOAD	190
+#define MOD_ENDING	9
 #define MSL_NSONGS	10
-#define MSL_NSAMPS	241
-#define MSL_BANKSIZE	251
+#define MSL_NSAMPS	224
+#define MSL_BANKSIZE	234
