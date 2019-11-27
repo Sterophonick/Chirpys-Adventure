@@ -3,6 +3,45 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE276D1D-0DF9-4731-9A10-AC88C9C18A13}"
+	ProjectSection(SolutionItems) = preProject
+		src\collisions.c = src\collisions.c
+		src\debug.c = src\debug.c
+		src\enemies.c = src\enemies.c
+		src\game.c = src\game.c
+		src\lang.c = src\lang.c
+		src\main.c = src\main.c
+		src\menucode.c = src\menucode.c
+		src\scroll.c = src\scroll.c
+		src\sram.c = src\sram.c
+		src\worldmap.c = src\worldmap.c
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{208E7AC4-2007-4C84-85F0-06368BE88F10}"
+	ProjectSection(SolutionItems) = preProject
+		include\chirpy.h = include\chirpy.h
+		include\collisions.h = include\collisions.h
+		include\game.h = include\game.h
+		include\graphics.h = include\graphics.h
+		include\lang.h = include\lang.h
+		include\main.h = include\main.h
+		include\menu.h = include\menu.h
+		include\sound.h = include\sound.h
+		include\sram.h = include\sram.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{6774F1E9-177E-4327-AC49-96232B9EDCDC}"
+	ProjectSection(SolutionItems) = preProject
+		makefile = makefile
+		include\sram.h = include\sram.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{F5D705F2-FA04-42B0-A2DB-69C0F8CC5666}"
+	ProjectSection(SolutionItems) = preProject
+		src\menu.c = src\menu.c
+		src\soundbank.s = src\soundbank.s
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
