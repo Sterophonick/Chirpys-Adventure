@@ -13,14 +13,13 @@ u8 g_MenuKeyLockDown = 0;
 u8 g_MenuKeyLockLeft = 0;
 u8 g_MenuKeyLockRight = 0;
 u8 g_MenuKeyLockA = 0;
-
  
 void g_InitMainMenu()  
 { 
-	mmStart(MOD_ENDING, MM_PLAY_LOOP); //Start playing the menu theme
+	mmStart(MOD_THEME, MM_PLAY_LOOP); //Start playing the menu theme
 	mmSetModuleVolume(2048);
 	hrt_InitTiledText(0);
-
+	hrt_SetBGY(1,105);
 	//Load the Graphics and Map
 	hrt_DMACopy(3, (u16*)m_bg_Tiles, (u32*)0x600C000, 448, 0x80000000);
     hrt_DMACopy(3, (u16*)m_bg_Map, (u32*)0x6002000, 1024, 0x80000000);
@@ -35,8 +34,22 @@ void g_InitMainMenu()
         hrt_SetFXLevel(15-g_Index);
         hrt_VblankIntrWait();
     }
+	g_MainMenuMoveTitleCard();
+	while(1)
+	{
+		hrt_VblankIntrWait();
+		if(hrt_IsKeyPressed(A))
+		{
+			gInitMainGame();
+		}
+	}
+}
+
+void g_MainMenuMoveTitleCard()
+{
 	g_Index = 8;
 	register u16 pos=100;
+	hrt_DSPEnableBG(1);
 	while(g_Index>0)
 	{
 		hrt_VblankIntrWait();
@@ -46,9 +59,5 @@ void g_InitMainMenu()
 		}
 		pos+=g_Index;
 		hrt_SetBGY(1, pos);
-	}
-	while(1)
-	{
-		hrt_VblankIntrWait();
 	}
 }

@@ -9,17 +9,18 @@
 int main(void)
 {
 	hrt_Init();
-	hrt_DSPDisableForceBlank();
-	hrt_DSPEnableBG(1);
 	hrt_DSPEnableBG(2);
 	hrt_DSPEnableOBJ();
 	hrt_FXSetBlendMode(FX_MODE_BRIGHTEN);
 	mmInitDefault((mm_addr)soundbank_bin, 20);
 	mmSetVBlankHandler(VBLFunc);
 	hrt_SetFXLevel(15);
-	hrt_FXEnableBG(0,1);
-	hrt_FXEnableBG(0,2);
+	hrt_FXEnableBG(1,0);
+	hrt_FXEnableBG(2,0);
+	hrt_FXEnableBackdrop(0);
+	hrt_FXEnableOBJ(0);
 	hrt_SetKeyStructPointer(keypad);
+	hrt_DSPDisableForceBlank();
 	g_InitMainMenu();
 	return 0;
 }
