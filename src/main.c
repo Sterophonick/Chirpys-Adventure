@@ -10,6 +10,7 @@ int main(void)
 {
 	hrt_Init();
 	hrt_DSPEnableBG(2);
+	hrt_DSPDisableBG(1);
 	hrt_DSPEnableOBJ();
 	hrt_FXSetBlendMode(FX_MODE_BRIGHTEN);
 	mmInitDefault((mm_addr)soundbank_bin, 20);
