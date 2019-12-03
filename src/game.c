@@ -9,6 +9,25 @@ u32 g_Frames = 0;
 u32 g_Index = 0;
 PAD keypad;
 
+u8 gMusicTable[16] = {
+	MOD_WORLD1,
+	MOD_WORLD1,
+	MOD_WORLD1,
+	MOD_WORLD1,
+	MOD_WORLD2,
+	MOD_WORLD2,
+	MOD_WORLD2,
+	MOD_WORLD2,
+	MOD_WORLD3,
+	MOD_WORLD3,
+	MOD_WORLD3,
+	MOD_WORLD3,
+	MOD_WORLD4,
+	MOD_WORLD4,
+	MOD_WORLD4,
+	MOD_WORLD4,
+};
+ 
 void gInitMainGame()
 {
 	hrt_ConfigMapLayerDrawing(1, (void*)level1MetaTiles, 150, 20, (void*)level1MetaMap, 1, 1);

@@ -18,7 +18,7 @@ build/main.elf: $(OBJECTS)
 	$(PREFIX)gcc $(SPECS) $(ARCH) $(OBJECTS) -lheart -lm -o build/main.elf
 chirpy.gba: $(ELFS)
 	$(PREFIX)objcopy -O binary $(ELFS) chirpy.gba
-	C:\devkitPro\devkitARM\bin\gbafix -tCHIRPYADV___	-cCPAU -mST -r01 chirpy.gba
+	C:\devkitPro\devkitARM\bin\gbafix -tCHRPYADVNTRE	-cCPAU -mST -r01 chirpy.gba
 clean:
 	-rm -f build/*.o
 	-rm -f build/main.elf

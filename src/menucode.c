@@ -14,6 +14,9 @@ u8 g_MenuKeyLockLeft = 0;
 u8 g_MenuKeyLockRight = 0;
 u8 g_MenuKeyLockA = 0;
 
+//void (*jMainMenuHomeTable[])(void) = {g_MainMenuNewGame,g_MainMenuContinueGame,g_MainMenuOptions};
+//void (*jMainMenuOptionsTable[])(void) = {g_MainMenuOptionsMusicVolume,g_MainMenuOptionsSoundVolume,g_MainMenuOptionsSoundTest,g_MainMenuOptionsCredits,g_MainMenuOptionsControls};
+
 void g_InitMainMenu()  
 { 
 	mmStart(MOD_THEME, MM_PLAY_LOOP); //Start playing the menu theme

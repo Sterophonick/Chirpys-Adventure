@@ -47,7 +47,7 @@ const char gl_debug_all[]="All data will be erased.";
 const char gl_continue_fileempty[]="File is Empty.";
 
 const char gl_debug_erase[]="Erase save data?";
-const char gl_debug_build[]="Build date: 164210182018";
+const char gl_debug_build[]="Build date: 17124512022019";
 
 const char gl_options_soundtest_music[]="Music ID";
 const char gl_options_soundtest_sound[]="Sound ID";
@@ -80,7 +80,7 @@ const char gl_menu_cont[]="Continue";
 const char gl_menu_opt[]="Options";
 const char gl_menu_exit[]="Exit";
 const char gl_menu_press[]="Press Start!";
-const char gl_menu_name[]="Sterophonick 2018";
+const char gl_menu_name[]="Sterophonick 2020";
 
 const char gl_menu_cont_empt[]="Empty";
 const char gl_menu_f1[]="File 1: ";
@@ -103,7 +103,7 @@ const char gl_debug_sx[]="SCREEN_X:";
 
 const char *gl_credits[112] = {
 	"Chirpy's Adventure",
-	"Sterophonick 2018",
+	"Sterophonick 2020",
 	"",
 	"Programming",
 	"------------------------------",
@@ -138,9 +138,10 @@ const char *gl_credits[112] = {
 	"Terry Cavanagh",
 	"FearOfDark",
 	"Doh",
-	"Renegade Kid",
-	"Nintendo",
-	"Capcom",
+	"Keiichi Suzuki (EarthBound)",
+	"Hirokazu Tanaka (EarthBound)",
+	"Koji Kondo (SMW)",
+	"ogge & raina",
 	"",
 	"------------------------------",
 	"HeartLib API created",
@@ -155,12 +156,12 @@ const char *gl_credits[112] = {
 	"(In no particular order)",
 	"------------------------------",
 	"DevKitPro",
-	"Nintendo",
+	"3DSage",
 	"gbadev.org",
 	"Stevendog98",
 	"Insequearaux",
 	"Free Software Foundation",
-	"Tubooboo  (WOO HAM v3.0!!)",
+	"Tubooboo (WOO HAM v3.0!!)",
 	"Microsoft",
 	"EZ-Flash",
 	"Jason Wilkins",
