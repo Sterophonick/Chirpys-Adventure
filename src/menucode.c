@@ -13,7 +13,7 @@ u8 g_MenuKeyLockDown = 0;
 u8 g_MenuKeyLockLeft = 0;
 u8 g_MenuKeyLockRight = 0;
 u8 g_MenuKeyLockA = 0;
- 
+
 void g_InitMainMenu()  
 { 
 	mmStart(MOD_THEME, MM_PLAY_LOOP); //Start playing the menu theme
@@ -47,17 +47,17 @@ void g_InitMainMenu()
 
 void g_MainMenuMoveTitleCard()
 {
-	g_Index = 8;
+	long double g_Index2 = 8;
 	register u16 pos=100;
 	hrt_DSPEnableBG(1);
-	while(g_Index>0)
+	while(g_Index2>0)
 	{
 		hrt_VblankIntrWait();
-		if(!(g_Frames % 5))
+		if(!(g_Frames % 13))
 		{
-			g_Index*=0.99;
+			g_Index2*=0.59;
 		}
-		pos+=g_Index;
+		pos+=g_Index2;
 		hrt_SetBGY(1, pos);
 	}
 }
