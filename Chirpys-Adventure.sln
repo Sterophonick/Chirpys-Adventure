@@ -33,11 +33,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{6774F1E9-177E-4327-AC49-96232B9EDCDC}"
 	ProjectSection(SolutionItems) = preProject
 		makefile = makefile
-		include\sram.h = include\sram.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{F5D705F2-FA04-42B0-A2DB-69C0F8CC5666}"
 	ProjectSection(SolutionItems) = preProject
+		src\level1.c = src\level1.c
 		src\menu.c = src\menu.c
 		src\soundbank.s = src\soundbank.s
 	EndProjectSection
