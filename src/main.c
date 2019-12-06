@@ -14,6 +14,9 @@ int main(void)
 	hrt_DSPEnableOBJ();
 	hrt_FXSetBlendMode(FX_MODE_BRIGHTEN);
 	mmInitDefault((mm_addr)soundbank_bin, 20);
+	//hrt_irqInit();
+	//hrt_irqSet(IRQ_VBLANK, VBLFunc);
+	//hrt_irqEnable(IRQ_VBLANK);
 	mmSetVBlankHandler(VBLFunc);
 	hrt_SetFXLevel(16);
 	hrt_FXEnableBG(1,0);

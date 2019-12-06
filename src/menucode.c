@@ -16,6 +16,13 @@ u8 g_MenuKeyLockA = 0;
 
 //void (*jMainMenuHomeTable[])(void) = {g_MainMenuNewGame,g_MainMenuContinueGame,g_MainMenuOptions};
 //void (*jMainMenuOptionsTable[])(void) = {g_MainMenuOptionsMusicVolume,g_MainMenuOptionsSoundVolume,g_MainMenuOptionsSoundTest,g_MainMenuOptionsCredits,g_MainMenuOptionsControls};
+int temp;
+
+void HBLFunc(void)
+{
+	temp++;
+	REG_BG2HOFS = temp;
+}
 
 void g_InitMainMenu()  
 { 
@@ -38,6 +45,8 @@ void g_InitMainMenu()
         hrt_VblankIntrWait();
     }
 	g_MainMenuMoveTitleCard();
+	//hrt_irqSet(IRQ_HBLANK, HBLFunc);
+	//hrt_irqEnable(IRQ_HBLANK);
 	while(1)
 	{
 		hrt_VblankIntrWait();
