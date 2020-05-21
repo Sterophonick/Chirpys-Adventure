@@ -12,9 +12,17 @@ int main()
 	hrt_SetIRQ(IRQ_VBLANK, vblFunc);
 	hrt_DSPDisableForceBlank();
 	hrt_DSPEnableBG(2);
-	hrt_DSPSetBGMode(3);
+	hrt_DSPSetBGMode(0);
+	hrt_DSPEnableOBJ();
+	hrt_SetFXMode(FX_MODE_BRIGHTEN);
+	hrt_SetFXLevel(16);
+	hrt_FXEnableBG(1,0);
+	hrt_FXEnableBG(2,0);
+	hrt_FXEnableBackdrop(0);
+	hrt_FXEnableOBJ(0);
 	while(1)
 	{
 		hrt_VblankIntrWait();
 	}
+	return 0;
 }
