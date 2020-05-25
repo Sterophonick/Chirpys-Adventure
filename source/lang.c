@@ -101,8 +101,15 @@ const char gl_debug_py[]="PLAYR_Y:";
 const char gl_debug_sx[]="SCREEN_X:";
 
 const char gl_debug_menu_header[] = "Chirpy's Adventure Debug Menu";
-
-
+const char gl_debug_menu_sndtst[] = "SOUND_TEST";
+const char gl_debug_menu_lvlslt[] = "LEVEL_SELECT";
+const char gl_debug_menu_svedtr[] = "SAVE_EDITOR";
+const char gl_debug_menu_sprtst[] = "SPRITE_TEST";
+const char gl_debug_menu_lvlslt_world1 = "WORLD_1";
+const char gl_debug_menu_lvlslt_world2 = "WORLD_2";
+const char gl_debug_menu_lvlslt_world3 = "WORLD_3";
+const char gl_debug_menu_lvlslt_world4 = "WORLD_4";
+const char gl_debug_menu_lvlslt_world5 = "WORLD_5";
 
 const char *gl_credits[112] = {
 	"Chirpy's Adventure",

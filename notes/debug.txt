@@ -1,0 +1,9 @@
+It checks to make sure that SRAM data is readable and valid
+ - it uses checksums to do this.
+
+There is a key combination at the menu that will unlock the debug menu, and play the unnerving beeping noise from Petscop
+Options:
+	Save Editor
+	Level Select
+	Sound Test
+	Sprite Test

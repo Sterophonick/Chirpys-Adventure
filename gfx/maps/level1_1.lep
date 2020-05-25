@@ -1,0 +1,13 @@
+[EDITOR]
+Version=0.01
+[LEVEL]
+Path=C:\Users\stero\Documents\GitHub\Chirpys-Adventure\gfx\maps\level1_1.led
+Rows=20
+Columns=150
+[TEXTURE]
+Path=C:\Users\stero\Documents\GitHub\Chirpys-Adventure\gfx\tiles\tiles01.bmp
+Rows=20
+Columns=150
+[TILES]
+Width=16
+Height=16

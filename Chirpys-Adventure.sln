@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE276D1D-0DF9-4731-9A10-AC88C9C18A13}"
 	ProjectSection(SolutionItems) = preProject
 		source\animations.c = source\animations.c
+		source\game.c = source\game.c
 		source\interrupt.c = source\interrupt.c
 		source\lang.c = source\lang.c
 		source\main.c = source\main.c
