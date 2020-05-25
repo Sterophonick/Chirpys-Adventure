@@ -7,7 +7,7 @@ u8 test;
 
 int main()
 {
-	mmInitDefault((void*)soundbank_bin, 16);
+	mmInitDefault((void*)soundbank_bin, 24);
 	mmStart(MOD_ENDING, MM_PLAY_LOOP);
 	hrt_InitIRQ();
 	hrt_EnableIRQ(IRQ_VBLANK);
@@ -23,7 +23,7 @@ int main()
 	hrt_FXEnableBackdrop(0);
 	hrt_FXEnableOBJ(0);
 	initSoundEffects();
-	test = mmEffectEx(&gDebugConfirm);
+	mmEffectEx(&gElevatorStop);
 	while(1)
 	{
 		hrt_VblankIntrWait();

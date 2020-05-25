@@ -38,4 +38,7 @@ void initSoundEffects()
 {
 	mmConfigDynamicEffect(gDebugConfirm, SFX_DBG_SELECT, (int)(1.0f * (1 << 10)), 1, 128, 0);
 	mmConfigDynamicEffect(gDebugUnlock, SFX_DBG_UNLOCK, (int)(1.0f * (1 << 10)), 1, 128, 0);
+	mmConfigDynamicEffect(gElevatorRun, SFX_ELVTR_RUN, (int)(1.0f * (1 << 10)), 1, 128, 0);
+	mmConfigDynamicEffect(gElevatorStart, SFX_ELVTR_START, (int)(1.0f * (1 << 10)), 1, 128, 0);
+	mmConfigDynamicEffect(gElevatorStop, SFX_ELVTR_STOP, (int)(1.0f * (1 << 10)), 1, 128, 0);
 }
