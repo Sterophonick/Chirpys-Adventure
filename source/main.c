@@ -1,11 +1,14 @@
 #include <libheart.h>
 #include "data.h"
 #include "interrupt.h"
+#include "sound.h"
+
+u8 test;
 
 int main()
 {
 	mmInitDefault((void*)soundbank_bin, 16);
-	mmStart(MOD_WORLD4, MM_PLAY_LOOP);
+	mmStart(MOD_ENDING, MM_PLAY_LOOP);
 	hrt_InitIRQ();
 	hrt_EnableIRQ(IRQ_VBLANK);
 	hrt_SetIRQ(IRQ_VBLANK, vblFunc);
@@ -19,6 +22,8 @@ int main()
 	hrt_FXEnableBG(2,0);
 	hrt_FXEnableBackdrop(0);
 	hrt_FXEnableOBJ(0);
+	initSoundEffects();
+	test = mmEffectEx(&gDebugConfirm);
 	while(1)
 	{
 		hrt_VblankIntrWait();

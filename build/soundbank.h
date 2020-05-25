@@ -29,11 +29,12 @@
 #define SFX_TEST	99
 #define MOD_THEME	4
 #define SFX_UNK_CLOCK	124
+#define SFX_UNK_CLOCK_REVERB	125
 #define MOD_WORLD1	5
 #define MOD_WORLD2	6
 #define MOD_WORLD3	7
 #define MOD_WORLD4	8
 #define MOD_WORLD5	9
 #define MSL_NSONGS	10
-#define MSL_NSAMPS	222
-#define MSL_BANKSIZE	232
+#define MSL_NSAMPS	223
+#define MSL_BANKSIZE	233

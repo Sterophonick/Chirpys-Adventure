@@ -10,3 +10,5 @@ world 4: a city
 
 World 5: the glitch dimension
 there's gonna be a cutscene at the end of world 4 that will explain how Chirpy got the the glitch dimension
+
+level size: 150 x 20 (16x16 tiles)
