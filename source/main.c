@@ -1,6 +1,5 @@
 #include <libheart.h>
-#include "soundbank_bin.h"
-#include "soundbank.h"
+#include "data.h"
 #include "interrupt.h"
 
 int main()
