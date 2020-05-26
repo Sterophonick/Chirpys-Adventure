@@ -12,15 +12,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE276D1D-0DF
 		source\main.c = source\main.c
 		source\menus.c = source\menus.c
 		source\player.c = source\player.c
+		source\sound.c = source\sound.c
 		source\sram.c = source\sram.c
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{208E7AC4-2007-4C84-85F0-06368BE88F10}"
 	ProjectSection(SolutionItems) = preProject
+		include\animations.h = include\animations.h
+		include\data.h = include\data.h
 		include\game.h = include\game.h
 		include\interrupt.h = include\interrupt.h
 		include\lang.h = include\lang.h
 		include\menus.h = include\menus.h
+		include\sound.h = include\sound.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{6774F1E9-177E-4327-AC49-96232B9EDCDC}"
@@ -29,6 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{6774F1E9
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{F5D705F2-FA04-42B0-A2DB-69C0F8CC5666}"
+	ProjectSection(SolutionItems) = preProject
+		build\soundbank.h = build\soundbank.h
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
