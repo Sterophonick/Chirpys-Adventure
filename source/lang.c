@@ -111,7 +111,7 @@ const char gl_debug_menu_lvlslt_world3[] = "WORLD_3";
 const char gl_debug_menu_lvlslt_world4[] = "WORLD_4";
 const char gl_debug_menu_lvlslt_world5[] = "WORLD_5";
 
-const char *gl_credits[112] = {
+const char *gl_credits[107] = {
 	"Chirpy's Adventure",
 	"Sterophonick 2020",
 	"",
@@ -191,6 +191,7 @@ const char *gl_credits[112] = {
 	"Peter Schraut",
 	"Coranac",
 	"Loirak",
+	"sergeeo",
 	"",
 	"and YOU!",
 	"",
